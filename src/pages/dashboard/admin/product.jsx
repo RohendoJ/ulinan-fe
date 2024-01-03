@@ -2,42 +2,46 @@ import {
   ButtonLinkAdmin,
   LimitSelect,
   Search,
-  TableCategoryAdmin,
+  TableProductAdmin,
 } from "../../../components";
 import { ContentAdminLayout } from "../../../layouts";
 
-export const CategoryAdmin = () => {
+export const ProductAdmin = () => {
   const list = [
     {
-      name: "Category",
+      name: "Product",
     },
   ];
-
   const dataTable = [
     {
       id: 1,
-      name: "Paket Event",
-      description: "Paket event terdiridari beberapa",
+      name: "Darajat pas",
+      price: 10000,
+      category: "Wisata",
     },
     {
       id: 2,
-      name: "Wisata",
-      description: "Wisata-wisata yang ada di daerah garut",
+      name: "Sayang helang",
+      price: 10000,
+      category: "Wisata",
     },
     {
       id: 3,
-      name: "Event",
-      description: "Acara yang menarik dan seru untuk dihadiri",
+      name: "Talaga Bodas",
+      price: 10000,
+      category: "Wisata",
     },
     {
       id: 4,
-      name: "Foods",
-      description: "Makanan tradisional dari berbagai daerah",
+      name: "Papandayan",
+      price: 10000,
+      category: "Entertainment",
     },
     {
       id: 5,
-      name: "Entertaiment",
-      description: "tempat-tempat Bermedia yang sangat seru",
+      name: "Gunung Putri",
+      price: 10000,
+      category: "Paket Event",
     },
   ];
 
@@ -57,15 +61,15 @@ export const CategoryAdmin = () => {
   ];
 
   return (
-    <ContentAdminLayout title="Category" list={list}>
+    <ContentAdminLayout title="Product" list={list}>
       <div className="flex items-center mt-5 justify-between">
         <LimitSelect options={limitData} />
         <div className="flex items-center gap-6">
           <Search />
-          <ButtonLinkAdmin href="/dashboard-admin/category/add" />
+          <ButtonLinkAdmin href="/dashboard-admin/product/add" />
         </div>
       </div>
-      <TableCategoryAdmin data={dataTable} />
+      <TableProductAdmin data={dataTable} />
     </ContentAdminLayout>
   );
 };

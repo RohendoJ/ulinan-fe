@@ -13,7 +13,7 @@ export const HomeAdmin = () => {
       link: "/dashboard-admin/category",
     },
     {
-      name: "Produk",
+      name: "Product",
       value: 10,
       icon: <MdShop />,
       link: "/dashboard-admin/product",
@@ -22,19 +22,19 @@ export const HomeAdmin = () => {
       name: "Transaksi",
       value: 10,
       icon: <MdAttachMoney />,
-      link: "/dashboard-admin/transaction",
+      link: "/dashboard-admin/transaksi",
     },
     {
       name: "Success",
       value: 10,
       icon: <MdCheck />,
-      link: "/dashboard-admin/transaction",
+      link: "/dashboard-admin/transaksi",
     },
   ];
 
   return (
     <ContentAdminLayout title="Welcome!">
-      <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center lg:justify-items-start lg:grid-cols-2 w-full gap-y-16 py-6 lg:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center lg:justify-items-start lg:grid-cols-2 w-full gap-y-16 py-8 lg:px-8">
         {cardValues.map((card, index) => (
           <CardAdmin
             key={index}

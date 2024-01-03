@@ -2,14 +2,14 @@ import {
   ButtonLinkAdmin,
   LimitSelect,
   Search,
-  TableCategoryAdmin,
+  TableGalleryAdmin,
 } from "../../../components";
 import { ContentAdminLayout } from "../../../layouts";
 
-export const CategoryAdmin = () => {
+export const GalleryAdmin = () => {
   const list = [
     {
-      name: "Category",
+      name: "Galeri",
     },
   ];
 
@@ -57,15 +57,15 @@ export const CategoryAdmin = () => {
   ];
 
   return (
-    <ContentAdminLayout title="Category" list={list}>
+    <ContentAdminLayout title="Galeri" list={list}>
       <div className="flex items-center mt-5 justify-between">
         <LimitSelect options={limitData} />
         <div className="flex items-center gap-6">
           <Search />
-          <ButtonLinkAdmin href="/dashboard-admin/category/add" />
+          <ButtonLinkAdmin href="/dashboard-admin/galeri/add" />
         </div>
       </div>
-      <TableCategoryAdmin data={dataTable} />
+      <TableGalleryAdmin data={dataTable} />
     </ContentAdminLayout>
   );
 };

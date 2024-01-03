@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { SidebarAdmin } from "../components/sidebar-admin";
-import { NavbarAdmin } from "../components";
+import { NavbarAdmin, SidebarAdmin } from "../components";
 
 export const AdminLayout = () => {
   return (
-    <main className="w-full h-screen flex items-center">
+    <main className="w-full h-screen flex items-center overflow-y-auto">
       <SidebarAdmin />
-      <section className="flex flex-col w-full h-full justify-center items-center mt-[3.7rem] md:mt-0">
+      <section className="flex flex-col w-full h-full justify-start">
         <NavbarAdmin />
         <Outlet />
       </section>

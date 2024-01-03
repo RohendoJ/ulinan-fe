@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import { LazyLoading } from "./components";
 import { SignIn, SignUp } from "./pages";
 import { lazily } from "react-lazily";
-const { HomeAdmin, CategoryAdmin } = lazily(() => import("./pages/dashboard"));
+const { HomeAdmin, CategoryAdmin, ProductAdmin, GalleryAdmin, TransaksiAdmin } =
+  lazily(() => import("./pages/dashboard"));
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,30 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<LazyLoading />}>
             <CategoryAdmin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "product",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <ProductAdmin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "galeri",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <GalleryAdmin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "transaksi",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <TransaksiAdmin />
           </Suspense>
         ),
       },

@@ -6,3 +6,6 @@ export * from "./button";
 export * from "./card-admin";
 export * from "./card-user";
 export * from "./footer-user";
+export * from "./breadcumb";
+export * from "./sidebar-admin";
+export * from "./table-admin";
