@@ -13,7 +13,7 @@ export const Navbar = () => {
 
   return (
     <Fragment>
-      <nav className="w-full h-[10%] xl:h-[13%] shadow-md flex justify-between items-center px-10 z-10">
+      <nav className="w-full h-[10%] xl:h-[80px] shadow-md flex justify-between items-center px-10 z-10 fixed bg-white">
         <section className="w-[40%] xl:w-[10%]">
           <img
             src="/auth-logo.png"
@@ -58,7 +58,7 @@ export const Navbar = () => {
           <button
             className="border-2 border-[#2284DF] rounded-xl w-full h-12 font-bold text-[#2284DF]"
             onClick={() => {
-              navigate("/sign-in");
+              navigate("/auth/sign-in");
             }}
           >
             Masuk
@@ -66,7 +66,7 @@ export const Navbar = () => {
           <button
             className="bg-[#2284DF] rounded-xl text-white w-full h-12"
             onClick={() => {
-              navigate("/sign-up");
+              navigate("/auth/sign-up");
             }}
           >
             Daftar
