@@ -1,10 +1,9 @@
 import { Link, createBrowserRouter } from "react-router-dom";
-import { lazily } from "react-lazily";
 import { Home } from "./pages/dashboard/home";
 import { AuthLayout, AdminLayout } from "./layouts";
 import { Suspense } from "react";
 import { LazyLoading } from "./components";
-const { SignIn, SignUp } = lazily(() => import("./pages/auth"));
+import { SignIn, SignUp } from "./pages";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +16,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "sign-in",
+
         element: <SignIn />,
       },
       {

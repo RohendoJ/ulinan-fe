@@ -18,7 +18,8 @@ export const Navbar = () => {
           <img
             src="/auth-logo.png"
             alt="ulinan"
-            className="w-[150px] h-[50px]"
+            className="w-[150px] h-[50px] hover:cursor-pointer"
+            onClick={() => navigate("/")}
           />
         </section>
 
@@ -74,7 +75,7 @@ export const Navbar = () => {
       </nav>
 
       <aside
-        className={`flex xl:hidden w-[100vw] h-[90dvh] bottom-0 bg-slate-50 absolute duration-500 z-0 flex-col justify-evenly items-center ${
+        className={`flex xl:hidden w-[100vw] h-[90dvh] bottom-0 bg-slate-50 absolute duration-500 z-10 flex-col justify-evenly items-center ${
           open ? "translate-x-0" : "-translate-x-[100vw]"
         }`}
       >
