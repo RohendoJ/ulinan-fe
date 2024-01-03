@@ -7,7 +7,7 @@ import {
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "./hook.js";
 
 export const SignUp = () => {
@@ -18,6 +18,8 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsConfirmShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const togglePassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -55,7 +57,12 @@ export const SignUp = () => {
   return (
     <main className="w-screen h-[100dvh] md:h-screen bg-[url('/auth-sign-up.png')] bg-bottom bg-no-repeat bg-cover object-cover flex justify-center items-center xl:justify-start xl:flex-col">
       <section className="w-full h-[15%] items-center pl-[10%] hidden xl:flex">
-        <img src="/auth-logo.png" alt="ulinan" className="w-[120px]" />
+        <img
+          onClick={() => navigate("/")}
+          src="/auth-logo.png"
+          alt="ulinan"
+          className="w-[120px] hover:cursor-pointer"
+        />
       </section>
 
       <section className="w-full flex h-full xl:h-[70%]">
