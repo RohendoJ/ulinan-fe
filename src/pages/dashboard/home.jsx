@@ -1,4 +1,4 @@
-import { Navbar } from "../../components/navbar";
+import { Navbar } from "../../components";
 import { Fade } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 
@@ -18,8 +18,7 @@ export const Home = () => {
           arrows={false}
           autoplay={true}
           transitionDuration={1000}
-          duration={2000}
-        >
+          duration={2000}>
           <div className="w-full h-[300px]">
             <img
               className="w-full h-full object-cover rounded-md"

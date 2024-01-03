@@ -4,6 +4,8 @@ import { AuthLayout, AdminLayout } from "./layouts";
 import { Suspense } from "react";
 import { LazyLoading } from "./components";
 import { SignIn, SignUp } from "./pages";
+import { lazily } from "react-lazily";
+const { HomeAdmin, CategoryAdmin } = lazily(() => import("./pages/dashboard"));
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +35,15 @@ export const router = createBrowserRouter([
         path: "",
         element: (
           <Suspense fallback={<LazyLoading />}>
-            <LazyLoading />
+            <HomeAdmin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "category",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <CategoryAdmin />
           </Suspense>
         ),
       },

@@ -3,6 +3,7 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useLogin } from "./hook.js";
 import { setToken } from "../../utils/token.js";
+import { Button } from "../../components/button.jsx";
 
 export const SignIn = () => {
   const [emailOrUsername, setEmailOrUsername] = useState("");
@@ -79,9 +80,7 @@ export const SignIn = () => {
       </section>
 
       <section className="w-full h-[25%] flex flex-col items-center justify-start gap-3 mt-[10%]">
-        <button className="bg-[#2284DF] rounded-md w-[75%] h-8 text-white">
-          Masuk
-        </button>
+        <Button type="submit">Masuk</Button>
         <p className="text-[0.6rem] xl:text-[0.7rem]">
           Belum punya akun ?{" "}
           <Link to={"/auth/sign-up"} className="text-[#2284DF]">

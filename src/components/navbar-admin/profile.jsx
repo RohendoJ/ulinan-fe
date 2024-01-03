@@ -26,7 +26,11 @@ export const Profile = () => {
 
         <IoIosArrowDown className="text-2xl text-gray-400" />
       </button>
-      <DropDown alignPosition={"top-16 right-12"} showDropdown={isDropDown} />
+      <DropDown
+        alignPosition={"top-14 md:top-16 right-6 md:right-12"}
+        showDropdown={isDropDown}
+        onMouseLeave={() => setIsDropDown(false)}
+      />
     </Fragment>
   );
 };

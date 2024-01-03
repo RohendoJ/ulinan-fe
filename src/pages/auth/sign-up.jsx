@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useRegister } from "./hook.js";
+import { Button } from "../../components/button.jsx";
 
 export const SignUp = () => {
   const [fullname, setFullname] = useState("");
@@ -137,11 +138,7 @@ export const SignUp = () => {
       </section>
 
       <section className="w-full h-[25%] flex flex-col items-center justify-start gap-3 mt-[10%]">
-        <button
-          type="submit"
-          className="bg-[#2284DF] rounded-md w-[75%] h-8 text-white">
-          Daftar
-        </button>
+        <Button type="submit">Daftar</Button>
         <p className="text-[0.6rem] xl:text-[0.7rem]">
           Sudah punya akun ?{" "}
           <Link to={"/auth/sign-in"} className="text-[#2284DF]">
