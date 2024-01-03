@@ -1,4 +1,4 @@
-import { api } from "../../lib/axios";
+import { api } from "../../services/axios";
 
 export const registerRequest = async (payload) => {
   const { data } = await api.post("/api/auth/register", payload);
