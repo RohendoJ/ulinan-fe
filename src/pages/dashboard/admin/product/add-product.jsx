@@ -1,20 +1,13 @@
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  ButtonLinkAdmin,
-  TextField,
-  UploadDragField,
-} from "../../../../components";
+import { ButtonLinkAdmin, Select, TextField } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 
-export const AddCategory = () => {
-  const [image, setImage] = useState(null);
-
+export const AddProduct = () => {
   const list = [
     {
-      name: "Category",
+      name: "Product",
     },
   ];
 
@@ -23,31 +16,27 @@ export const AddCategory = () => {
   const form = useForm({
     mode: "all",
     defaultValues: {
-      category_name: "",
-      category_description: "",
+      product_name: "",
+      product_price: "",
+      product_category: "",
+      product_address: "",
+      product_information: "",
     },
   });
 
   const { handleSubmit } = form;
 
-  const onDrop = (e) => {
-    setImage(e.target.files[0]);
-  };
-
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log({
-        ...data,
-        image,
-      });
+      console.log(data);
 
       Swal.fire({
-        title: "Sukses Menambahkan Kategori",
+        title: "Sukses Menambahkan Product",
         icon: "success",
         showConfirmButton: false,
       });
 
-      navigate("/dashboard-admin/category");
+      navigate("/dashboard-admin/product");
     } catch (error) {
       Promise.reject(error);
     }
@@ -55,35 +44,45 @@ export const AddCategory = () => {
 
   return (
     <ContentAdminLayout
-      title="Tambah Category"
+      title="Tambah Product"
       notRootTitleColor="text-black"
       titleStyle="text-3xl font-bold"
       list={list}>
       <FormProvider {...form}>
         <form
           onSubmit={onSubmit}
-          className="w-full flex flex-col border-2 gap-4 border-black mt-6 rounded-md p-5">
+          className="w-full flex flex-col border-2 gap-5 border-black mt-6 rounded-md p-5">
           <TextField
-            name="category_name"
-            label="Nama Kategori"
-            placeholder="Masukan nama untuk kategori"
+            name="product_name"
+            label="Nama Product"
+            placeholder="Masukan nama untuk product"
           />
           <TextField
-            name="category_description"
-            label="Deskripsi"
+            name="product_price"
+            label="Harga"
+            placeholder="Masukan harga (hanya angka)"
+          />
+          <Select
+            name="product_category"
+            label="Kategori"
+            placeholder="Pilih kategori"
+            options={[{ value: "1", name: "Kategori 1" }]}
+          />
+          <TextField
+            name="product_address"
+            label="Alamat"
+            placeholder="Masukan alamat produk"
+          />
+          <TextField
+            name="product_information"
+            label="Informasi"
             isTextArea
-            placeholder="Masukan Deskripsi untuk kategori"
-          />
-          <UploadDragField
-            name="image"
-            label="image"
-            defaultImages={[]}
-            onChange={onDrop}
+            placeholder="Masukan informasi untuk produk"
           />
 
           <div className="flex items-center justify-between">
             <ButtonLinkAdmin
-              href="/dashboard-admin/category"
+              href="/dashboard-admin/product"
               backgroundColor="bg-[#B3B2B2]"
               textSize="text-lg">
               Batal

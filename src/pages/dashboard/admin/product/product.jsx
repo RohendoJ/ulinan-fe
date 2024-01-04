@@ -4,8 +4,8 @@ import {
   LimitSelect,
   Search,
   TableProductAdmin,
-} from "../../../components";
-import { ContentAdminLayout } from "../../../layouts";
+} from "../../../../components";
+import { ContentAdminLayout } from "../../../../layouts";
 
 export const ProductAdmin = () => {
   const list = [

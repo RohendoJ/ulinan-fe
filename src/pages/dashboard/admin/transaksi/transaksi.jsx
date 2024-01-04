@@ -3,8 +3,8 @@ import {
   LimitSelect,
   Search,
   TableTransaksiAdmin,
-} from "../../../components";
-import { ContentAdminLayout } from "../../../layouts";
+} from "../../../../components";
+import { ContentAdminLayout } from "../../../../layouts";
 
 export const TransaksiAdmin = () => {
   const list = [

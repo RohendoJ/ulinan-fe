@@ -15,7 +15,7 @@ export const ContentAdminLayout = ({
     <Fragment>
       <Breadcumb list={list} />
       <section
-        className={`w-full h-full flex py-6 px-8 ${
+        className={`w-full h-full flex py-6 mb-4 px-8 ${
           getPathname === "/dashboard-admin" ? "mt-8" : ""
         }`}>
         <div className="w-full h-full flex flex-col gap-2">

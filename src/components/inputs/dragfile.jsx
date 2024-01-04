@@ -4,19 +4,38 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { FaArrowDownLong } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 
-export const UploadDragField = ({ label }) => {
-  const [image, setImage] = useState(null);
+export const UploadDragField = ({
+  label,
+  name,
+  defaultImages,
+  required,
+  disabled,
+  onChange,
+  height = "h-[16rem]",
+}) => {
+  const [images, setImages] = useState(defaultImages);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setImage(URL.createObjectURL(acceptedFiles[0]));
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      setImages([
+        ...images,
+        {
+          id: (Math.random() * 1000).toString() + "-" + new Date().getTime(),
+          name: acceptedFiles[0].name,
+          image: URL.createObjectURL(acceptedFiles[0]),
+        },
+      ]);
+      console.log(acceptedFiles[0]);
+    },
+    [images]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <section
       className={`w-full ${
-        image ? "h-full" : "h-[16rem]"
+        images.length > 0 ? "h-full" : height
       }  flex flex-col gap-3`}>
       <label
         className="md:text-base text-sm font-semibold text-[#1B4242]"
@@ -31,7 +50,15 @@ export const UploadDragField = ({ label }) => {
               ? "border-[#A2D2FF] bg-slate-50 gap-5"
               : "border-black gap-1"
           }  border-dashed rounded-md`}>
-          <input {...getInputProps()} />
+          <input
+            {...getInputProps({
+              onChange: onChange,
+              id: name,
+              name: name,
+              disabled: disabled,
+              required: required,
+            })}
+          />
           {isDragActive ? (
             <Fragment>
               <FaArrowDownLong className="text-3xl lg:text-5xl text-[#A2D2FF] animate-bounce" />
@@ -41,18 +68,34 @@ export const UploadDragField = ({ label }) => {
             </Fragment>
           ) : (
             <Fragment>
-              {image ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setImage(null)}
-                    className="flex items-center justify-center rounded-full w-6 h-6 absolute top-4 right-4 bg-white bg-opacity-80">
-                    <RxCross2 />
-                  </button>
-                  <img
-                    src={image}
-                    alt="preview"
-                    className="w-[13rem] h-[13rem] object-cover"
-                  />
+              {images.length > 0 ? (
+                <div className="relative flex items-center gap-2">
+                  {images.map((item, index) => (
+                    <div key={index} className="relative pointer-events-auto">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          const inputFile = document.getElementById(name);
+
+                          const newImages = images.filter(
+                            (image) => image.id !== item.id
+                          );
+
+                          setImages(newImages);
+                          inputFile.value = null;
+                        }}
+                        className="flex items-center justify-center rounded-full w-6 h-6 absolute top-4 right-4 bg-white bg-opacity-80">
+                        <RxCross2 />
+                      </button>
+                      <img
+                        src={item.image}
+                        alt="preview"
+                        className="w-[13rem] h-[13rem] object-cover"
+                      />
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <Fragment>

@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { usePathnameAdmin, useSidebarMobile } from "../utils/hooks";
 
 export const SidebarAdmin = () => {
-  const [isToggle, setIsToggle] = useState(false);
+  const [isToggle, setIsToggle] = useState(true);
 
   const { getPathname, setPathname } = usePathnameAdmin();
   const { getSidebarMobile, setSidebarMobile } = useSidebarMobile();

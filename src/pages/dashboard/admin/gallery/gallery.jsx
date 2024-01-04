@@ -4,8 +4,8 @@ import {
   LimitSelect,
   Search,
   TableGalleryAdmin,
-} from "../../../components";
-import { ContentAdminLayout } from "../../../layouts";
+} from "../../../../components";
+import { ContentAdminLayout } from "../../../../layouts";
 
 export const GalleryAdmin = () => {
   const list = [

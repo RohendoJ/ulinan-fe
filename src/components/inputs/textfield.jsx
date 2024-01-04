@@ -33,7 +33,7 @@ export const TextField = ({
           {...field}
           rows={4}
           cols={50}
-          className="border-2 border-black md:py-2 py-1 px-4 text-base text-black rounded-md h-[8rem]"
+          className="border-2 border-black md:py-2 py-1 px-3.5 text-base text-black rounded-md h-[8rem]"
         />
       )}
 

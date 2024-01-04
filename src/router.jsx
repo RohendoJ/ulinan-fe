@@ -20,6 +20,10 @@ const {
   TransaksiAdmin,
   AddCategory,
   EditCategory,
+  AddProduct,
+  EditProduct,
+  EditTransaksi,
+  AddGallery,
 } = lazily(() => import("./pages/dashboard"));
 
 export const router = createBrowserRouter([
@@ -92,6 +96,22 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "product/add",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <AddProduct />
+          </Suspense>
+        ),
+      },
+      {
+        path: "product/edit/:id",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <EditProduct />
+          </Suspense>
+        ),
+      },
+      {
         path: "galeri",
         element: (
           <Suspense fallback={<LazyLoading />}>
@@ -100,10 +120,26 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "galeri/add",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <AddGallery />
+          </Suspense>
+        ),
+      },
+      {
         path: "transaksi",
         element: (
           <Suspense fallback={<LazyLoading />}>
             <TransaksiAdmin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "transaksi/edit/:id",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <EditTransaksi />
           </Suspense>
         ),
       },

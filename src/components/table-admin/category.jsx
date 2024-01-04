@@ -2,6 +2,7 @@ import { MdEdit } from "react-icons/md";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { DataNotFound } from "./error";
+import Swal from "sweetalert2";
 
 export const TableCategoryAdmin = ({ data }) => {
   if (!data || data?.length === 0) {
@@ -37,12 +38,36 @@ export const TableCategoryAdmin = ({ data }) => {
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
                 <div className="w-full flex items-center justify-center gap-5">
-                  <Link className="flex items-center justify-center p-1 rounded-lg bg-[#F2C219]">
+                  <Link
+                    to={`/dashboard-admin/category/edit/${data?.id}`}
+                    className="flex items-center justify-center p-1 rounded-lg bg-[#F2C219]">
                     <MdEdit className="text-white text-2xl" />
                   </Link>
-                  <Link className="flex items-center justify-center p-1 rounded-lg bg-[#E1272A]">
+                  <button
+                    onClick={() => {
+                      Swal.fire({
+                        title: "Yakin ingin menghapus data ini?",
+                        icon: "question",
+                        showConfirmButton: true,
+                        showDenyButton: true,
+                        denyButtonText: "Hapus",
+                        denyButtonColor: "#F2C219",
+                        confirmButtonText: "Batal",
+                        confirmButtonColor: "#2284DF",
+                        iconColor: "#F2994A",
+                      }).then((result) => {
+                        if (result.isDenied) {
+                          console.log("Hapus");
+                        }
+
+                        if (result.isConfirmed) {
+                          console.log("Batal");
+                        }
+                      });
+                    }}
+                    className="flex items-center justify-center p-1 rounded-lg bg-[#E1272A]">
                     <BiSolidTrashAlt className="text-white text-2xl" />
-                  </Link>
+                  </button>
                 </div>
               </td>
             </tr>
