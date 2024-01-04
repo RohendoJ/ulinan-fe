@@ -1,100 +1,30 @@
-import { CardUser, FooterUser, Navbar } from "../../../components";
+import { FooterUser, Navbar } from "../../../components";
 import "react-slideshow-image/dist/styles.css";
 import { Slideshow } from "./slideshow";
-import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import { Link } from "react-router-dom";
+import { CategoryHomepage } from "./category-homepage";
 
 export const Home = () => {
-  const responsive = {
-    0: { items: 1 },
-    568: { items: 2 },
-    1024: { items: 3 },
-    1280: { items: 4 },
-  };
-
-  const items = [
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-    <CardUser />,
-  ];
-
   return (
-    <main className="w-full h-auto flex flex-col">
+    <main className="w-full h-auto flex flex-col overflow-x-hidden">
       <Navbar />
+      <div className="flex mt-24 h-[40px] xl:hidden w-full justify-center items-center">
+        <input
+          type="text"
+          placeholder="Search"
+          className="bg-[#F5F6F7] w-[85%] h-full pl-5 rounded-md border focus:outline-slate-400"
+        />
+      </div>
       <Slideshow />
-
-      <div className="w-full mt-10 pl-[8%]">
-        <h1 className="font-bold text-xl">Rekomendasi</h1>
-      </div>
-      <div className="w-full h-auto flex justify-center items-center">
-        <div className="w-[85%] h-auto pl-[0.5%]">
-          <AliceCarousel
-            items={items}
-            responsive={responsive}
-            disableDotsControls
-          />
-        </div>
-      </div>
-
-      <section className="w-full grid place-items-center mt-10">
+      <CategoryHomepage heading={"Rekomendasi"} />
+      <section className="w-full px-[8%] mt-10 flex justify-center items-center">
         <h1 className="font-bold text-xl">Kategori</h1>
       </section>
-
-      <section className="w-full px-[8%] mt-10 flex justify-between items-center">
-        <h1 className="font-bold text-xl">Wisata</h1>
-        <Link to={"/category/wisata"} className="text-[#2284DF]">
-          See All
-        </Link>
-      </section>
-      <section className="w-full h-auto flex justify-center items-center">
-        <div className="w-[85%] h-auto pl-[0.5%]">
-          <AliceCarousel
-            items={items}
-            responsive={responsive}
-            disableDotsControls
-          />
-        </div>
-      </section>
-
-      <section className="w-full px-[8%] mt-10 flex justify-between items-center">
-        <h1 className="font-bold text-xl">Food</h1>
-        <Link to={"/category/food"} className="text-[#2284DF]">
-          See All
-        </Link>
-      </section>
-      <section className="w-full h-auto flex justify-center items-center">
-        <div className="w-[85%] h-auto pl-[0.5%]">
-          <AliceCarousel
-            items={items}
-            responsive={responsive}
-            disableDotsControls
-          />
-        </div>
-      </section>
-
-      <section className="w-full px-[8%] mt-10 flex justify-between items-center">
-        <h1 className="font-bold text-xl">Entertainment</h1>
-        <Link to={"/category/Entertainment"} className="text-[#2284DF]">
-          See All
-        </Link>
-      </section>
-      <section className="w-full h-auto flex justify-center items-center">
-        <div className="w-[85%] h-auto pl-[0.5%]">
-          <AliceCarousel
-            items={items}
-            responsive={responsive}
-            disableDotsControls
-          />
-        </div>
-      </section>
-
+      <CategoryHomepage heading={"Paket Event"} seeAll />
+      <CategoryHomepage heading={"Wisata"} seeAll />
+      <CategoryHomepage heading={"Event"} seeAll />
+      <CategoryHomepage heading={"Food"} seeAll />
+      <CategoryHomepage heading={"Entertainment"} seeAll />
       <FooterUser />
     </main>
   );

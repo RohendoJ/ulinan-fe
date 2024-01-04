@@ -8,7 +8,7 @@ export const Slideshow = () => {
   ];
 
   return (
-    <section className="mt-28 w-full h-[300px] flex justify-center items-center">
+    <section className="mt-7 xl:mt-28 w-full h-[200px] md:h-[300px] flex justify-center items-center">
       <div className="w-[85%] h-full">
         <Fade
           arrows={false}
@@ -17,17 +17,17 @@ export const Slideshow = () => {
           duration={2000}
         >
           <img
-            className="w-full h-[300px] object-cover rounded-md"
+            className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
             src={images[0]}
             alt="slide"
           />
           <img
-            className="w-full h-[300px] object-cover rounded-md"
+            className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
             src={images[1]}
             alt="slide"
           />
           <img
-            className="w-full h-[300px] object-cover rounded-md"
+            className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
             src={images[2]}
             alt="slide"
           />

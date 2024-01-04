@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -9,17 +8,21 @@ import {
 export const FooterUser = () => {
   return (
     <section className="w-full h-[300px] bg-[#134F86] mt-10 flex flex-col justify-evenly items-center">
-      <div className="flex gap-5">
-        <img src="/logo-white.png" alt="ulinan" className="object-cover" />
-        <div className="w-[1px] h-8 bg-white"></div>
-        <div className="text-white text-[1.5rem] flex justify-center items-center gap-5">
+      <div className="flex gap-5 items-center">
+        <img
+          src="/logo-white.png"
+          alt="ulinan"
+          className="w-[70px] md:w-[100px] object-cover"
+        />
+        <div className="w-[1px] h-5 md:h-7 xl:h-8 bg-white"></div>
+        <div className="text-white text-[1rem] md:text-[1.2rem] xl:text-[1.5rem] flex justify-center items-center gap-5">
           <FaFacebookF />
           <FaTwitter />
           <FaLinkedinIn />
           <FaInstagram />
         </div>
       </div>
-      <div className="flex text-white items-center gap-10">
+      <div className="flex text-white text-[0.7rem] md:text-[0.9rem] items-center gap-3 xl:gap-10">
         <h3>Home</h3>
         <div className="w-[1px] h-5 bg-white"></div>
         <h3>Service</h3>
@@ -31,14 +34,14 @@ export const FooterUser = () => {
         <h3>About</h3>
       </div>
       <div className="text-white w-[65%]">
-        <p className="text-center">
+        <p className="text-center text-[0.6rem] md:text-[0.8rem]">
           Ulinan adalah website wisata yang menyajikan informasi lengkap tentang
           destinasi wisata di Garut, Jawa Barat. Website ini dipersembahkan oleh
           Pemerintah Kabupaten Garut untuk memudahkan wisatawan dalam
           merencanakan perjalanan wisata ke Garut.
         </p>
       </div>
-      <div className="text-white">
+      <div className="text-white text-[0.7rem] md:text-[0.8rem]">
         <p>© 2022 Ulinan | Powered by Ulinan</p>
       </div>
     </section>
