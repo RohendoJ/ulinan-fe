@@ -4,9 +4,15 @@ import { Link } from "react-router-dom";
 import { DataNotFound } from "./error";
 import Swal from "sweetalert2";
 
-export const TableCategoryAdmin = ({ data }) => {
-  if (!data || data?.length === 0) {
+export const TableCategoryAdmin = ({ data, isLoading, onDelete }) => {
+  if ((!data && !isLoading) || (data?.length === 0 && !isLoading)) {
     return <DataNotFound />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container w-full h-[20rem] mx-auto my-6 bg-slate-200 animate-pulse"></div>
+    );
   }
 
   return (
@@ -57,11 +63,7 @@ export const TableCategoryAdmin = ({ data }) => {
                         iconColor: "#F2994A",
                       }).then((result) => {
                         if (result.isDenied) {
-                          console.log("Hapus");
-                        }
-
-                        if (result.isConfirmed) {
-                          console.log("Batal");
+                          onDelete(data?.id);
                         }
                       });
                     }}

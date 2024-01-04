@@ -8,6 +8,7 @@ import { ContentAdminLayout } from "../../../../layouts";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useCreateCategory } from "./hooks";
 
 export const AddCategory = () => {
   const [image, setImage] = useState(null);
@@ -28,6 +29,8 @@ export const AddCategory = () => {
     },
   });
 
+  const { mutate } = useCreateCategory();
+
   const { handleSubmit } = form;
 
   const onDrop = (e) => {
@@ -36,12 +39,12 @@ export const AddCategory = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log({
+      mutate({
         ...data,
         image,
       });
 
-      Swal.fire({
+      await Swal.fire({
         title: "Sukses Menambahkan Kategori",
         icon: "success",
         showConfirmButton: false,

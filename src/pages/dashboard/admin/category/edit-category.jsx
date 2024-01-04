@@ -5,19 +5,28 @@ import {
   UploadDragField,
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useGetCategoryById, useUpdateCategory } from "./hooks";
+import { useParams } from "react-router-dom";
 
 export const EditCategory = () => {
-  const [image, setImage] = useState(null);
-
   const list = [
     {
       name: "Category",
     },
   ];
+  const { id } = useParams();
 
+  const { data } = useGetCategoryById(id);
+  const { mutate } = useUpdateCategory(id);
+
+  const category = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
+  const [image, setImage] = useState(category?.image || null);
   const navigate = useNavigate();
 
   const form = useForm({
@@ -28,7 +37,7 @@ export const EditCategory = () => {
     },
   });
 
-  const { handleSubmit } = form;
+  const { handleSubmit, reset } = form;
 
   const onDrop = (e) => {
     setImage(e.target.files[0]);
@@ -36,12 +45,12 @@ export const EditCategory = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log({
+      mutate({
         ...data,
         image,
       });
 
-      Swal.fire({
+      await Swal.fire({
         title: "Sukses Menyimpan Kategori",
         icon: "success",
         showConfirmButton: false,
@@ -52,6 +61,14 @@ export const EditCategory = () => {
       Promise.reject(error);
     }
   });
+
+  useEffect(() => {
+    reset({
+      category_name: category?.name,
+      category_description: category?.description,
+    });
+    setImage(category?.image);
+  }, [category, reset]);
 
   return (
     <ContentAdminLayout
@@ -74,7 +91,13 @@ export const EditCategory = () => {
             isTextArea
             placeholder="Masukan Deskripsi untuk kategori"
           />
-          <UploadDragField name="image" label="image" onChange={onDrop} />
+          <UploadDragField
+            name="image"
+            label="image"
+            onChange={onDrop}
+            isCategory
+            defaultImages={image}
+          />
 
           <div className="flex items-center justify-between">
             <ButtonLinkAdmin

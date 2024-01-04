@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { FaArrowDownLong } from "react-icons/fa6";
@@ -8,34 +8,44 @@ export const UploadDragField = ({
   label,
   name,
   defaultImages,
+  isCategory,
   required,
   disabled,
   onChange,
   height = "h-[16rem]",
 }) => {
-  const [images, setImages] = useState(defaultImages);
+  const [images, setImages] = useState(defaultImages || null);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setImages([
-        ...images,
-        {
-          id: (Math.random() * 1000).toString() + "-" + new Date().getTime(),
-          name: acceptedFiles[0].name,
-          image: URL.createObjectURL(acceptedFiles[0]),
-        },
-      ]);
-      console.log(acceptedFiles[0]);
+      if (isCategory) {
+        setImages(URL.createObjectURL(acceptedFiles[0]));
+      } else {
+        setImages([
+          ...images,
+          {
+            id: (Math.random() * 1000).toString() + "-" + new Date().getTime(),
+            name: acceptedFiles[0].name,
+            image: URL.createObjectURL(acceptedFiles[0]),
+          },
+        ]);
+      }
     },
-    [images]
+    [images, isCategory]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  useEffect(() => {
+    if (defaultImages) {
+      setImages(defaultImages);
+    }
+  }, [defaultImages]);
+
   return (
     <section
       className={`w-full ${
-        images.length > 0 ? "h-full" : height
+        images?.length > 0 ? (isDragActive ? height : "h-full") : height
       }  flex flex-col gap-3`}>
       <label
         className="md:text-base text-sm font-semibold text-[#1B4242]"
@@ -68,7 +78,28 @@ export const UploadDragField = ({
             </Fragment>
           ) : (
             <Fragment>
-              {images.length > 0 ? (
+              {isCategory && images ? (
+                <div className="relative pointer-events-auto">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const inputFile = document.getElementById(name);
+
+                      setImages(null);
+                      inputFile.value = null;
+                    }}
+                    className="flex items-center justify-center rounded-full w-6 h-6 absolute top-4 right-4 bg-white bg-opacity-80">
+                    <RxCross2 />
+                  </button>
+                  <img
+                    src={images}
+                    alt="preview"
+                    className="w-[13rem] h-[13rem] object-cover"
+                  />
+                </div>
+              ) : !isCategory && images?.length > 0 ? (
                 <div className="relative flex items-center gap-2">
                   {images.map((item, index) => (
                     <div key={index} className="relative pointer-events-auto">
