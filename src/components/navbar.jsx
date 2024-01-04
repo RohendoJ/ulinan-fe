@@ -201,7 +201,7 @@ export const Navbar = () => {
         </section>
       )}
       <aside
-        className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-screen bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] lg:py-0 pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 top-0 ${
+        className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] lg:py-0 pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 top-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
