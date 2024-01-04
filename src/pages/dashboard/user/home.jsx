@@ -10,7 +10,7 @@ export const Home = () => {
   ];
 
   return (
-    <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">
+    <main className="w-screen h-auto flex flex-col">
       <Navbar />
 
       <section className="w-[85%] mt-32 h-[300px] mx-auto">

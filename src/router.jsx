@@ -3,8 +3,15 @@ import { AuthLayout, AdminLayout } from "./layouts";
 import { Home } from "./pages/dashboard/user/home";
 import { Suspense } from "react";
 import { LazyLoading } from "./components";
-import { SignIn, SignUp } from "./pages";
+import {
+  CategoryDetail,
+  HomeCatergory,
+  ProductDetail,
+  SignIn,
+  SignUp,
+} from "./pages";
 import { lazily } from "react-lazily";
+
 const {
   HomeAdmin,
   CategoryAdmin,
@@ -21,12 +28,17 @@ export const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "/category",
+    element: <HomeCatergory />,
+  },
+  { path: "/category/:name", element: <CategoryDetail /> },
+  { path: "/category/:name/:product", element: <ProductDetail /> },
+  {
     path: "/auth",
     element: <AuthLayout />,
     children: [
       {
         path: "sign-in",
-
         element: <SignIn />,
       },
       {
@@ -114,7 +126,8 @@ export const router = createBrowserRouter([
             </p>
             <Link
               href="/"
-              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
+              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
+            >
               Kembali
             </Link>
           </div>

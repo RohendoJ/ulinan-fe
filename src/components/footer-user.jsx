@@ -10,7 +10,7 @@ export const FooterUser = () => {
   return (
     <Fragment>
       <div className="flex gap-5">
-        <img src="./logo-white.png" alt="ulinan" className="object-cover" />
+        <img src="/logo-white.png" alt="ulinan" className="object-cover" />
         <div className="w-[1px] h-8 bg-white"></div>
         <div className="text-white text-[1.5rem] flex justify-center items-center gap-5">
           <FaFacebookF />
