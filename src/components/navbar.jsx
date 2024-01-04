@@ -63,7 +63,7 @@ export const Navbar = () => {
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (sideRef.current && !sideRef.current.contains(event.target)) {
-        setProfileOpen(false);
+        setOpen(false);
       }
     };
 
@@ -76,8 +76,8 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (sideRef.current && !sideRef.current.contains(event.target)) {
-        setOpen(false);
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
       }
     };
 
