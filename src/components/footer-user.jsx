@@ -8,7 +8,7 @@ import {
 
 export const FooterUser = () => {
   return (
-    <Fragment>
+    <section className="w-full h-[300px] bg-[#134F86] mt-10 flex flex-col justify-evenly items-center">
       <div className="flex gap-5">
         <img src="/logo-white.png" alt="ulinan" className="object-cover" />
         <div className="w-[1px] h-8 bg-white"></div>
@@ -41,6 +41,6 @@ export const FooterUser = () => {
       <div className="text-white">
         <p>© 2022 Ulinan | Powered by Ulinan</p>
       </div>
-    </Fragment>
+    </section>
   );
 };
