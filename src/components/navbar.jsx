@@ -14,6 +14,7 @@ export const Navbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const categoryRef = useRef(null);
   const profileRef = useRef(null);
+  const sideRef = useRef(null);
   const navigate = useNavigate();
 
   const toggleOpen = () => {
@@ -26,6 +27,23 @@ export const Navbar = () => {
 
   const toggleProfileOpen = () => {
     setProfileOpen(!profileOpen);
+  };
+
+  const alertLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Logout",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeToken();
+        navigate("/");
+      }
+    });
   };
 
   useEffect(() => {
@@ -44,8 +62,22 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
+      if (sideRef.current && !sideRef.current.contains(event.target)) {
         setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (sideRef.current && !sideRef.current.contains(event.target)) {
+        setOpen(false);
       }
     };
 
@@ -241,22 +273,7 @@ export const Navbar = () => {
                   </Link>
                 </div>
                 <div
-                  onClick={() => {
-                    Swal.fire({
-                      title: "Are you sure?",
-                      text: "You won't be able to revert this!",
-                      icon: "warning",
-                      showCancelButton: true,
-                      confirmButtonColor: "#3085d6",
-                      cancelButtonColor: "#d33",
-                      confirmButtonText: "Logout",
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        removeToken();
-                        navigate("/");
-                      }
-                    });
-                  }}
+                  onClick={alertLogout}
                   className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md"
                 >
                   <MdLogout className="text-[1.2rem] rotate-180 text-black" />
@@ -292,6 +309,7 @@ export const Navbar = () => {
         className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] lg:py-0 pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 inset-y-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
+        ref={sideRef}
       >
         <div className="flex flex-col gap-5 mt-[8vh]">
           <h1 className="text-[#2284DF] font-bold text-[1.5rem]">Kategori</h1>
@@ -301,22 +319,46 @@ export const Navbar = () => {
           <h1 className="text-[#2284DF] font-bold text-[1.5rem]">Cart</h1>
         </div>
         <div className="w-[80%] flex flex-col gap-5 lg:mb-[3vh]">
-          <button
-            className="border-2 border-[#2284DF] rounded-xl w-full h-12 font-bold text-[#2284DF]"
-            onClick={() => {
-              navigate("/auth/sign-in");
-            }}
-          >
-            Masuk
-          </button>
-          <button
-            className="bg-[#2284DF] rounded-xl text-white w-full h-12"
-            onClick={() => {
-              navigate("/auth/sign-up");
-            }}
-          >
-            Daftar
-          </button>
+          {token ? (
+            <section className="w-full flex flex-col items-center gap-5">
+              <Link
+                to={"/profile"}
+                className="w-full flex justify-around items-center p-2 bg-white border border-slate-300 rounded-md"
+              >
+                <img
+                  src={data?.avatar}
+                  alt="profile"
+                  className="w-[40px] h-[40px] rounded-full"
+                />
+                <h1 className="text-[1.2rem]">{data?.fullname}</h1>
+              </Link>
+              <button
+                onClick={alertLogout}
+                className="w-full bg-red-400 text-white p-2 rounded-md"
+              >
+                Log out
+              </button>
+            </section>
+          ) : (
+            <Fragment>
+              <button
+                className="border-2 border-[#2284DF] rounded-xl w-full h-12 font-bold text-[#2284DF]"
+                onClick={() => {
+                  navigate("/auth/sign-in");
+                }}
+              >
+                Masuk
+              </button>
+              <button
+                className="bg-[#2284DF] rounded-xl text-white w-full h-12"
+                onClick={() => {
+                  navigate("/auth/sign-up");
+                }}
+              >
+                Daftar
+              </button>
+            </Fragment>
+          )}
         </div>
       </aside>
     </nav>
