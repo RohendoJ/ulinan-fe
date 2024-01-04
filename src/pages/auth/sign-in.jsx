@@ -75,13 +75,7 @@ export const SignIn = () => {
             />
             <button
               onClick={togglePassword}
-<<<<<<< Updated upstream
-              type="button"
-              className="absolute inset-y-0 right-1"
-            >
-=======
               className="absolute inset-y-0 right-1">
->>>>>>> Stashed changes
               {isShowPassword ? (
                 <FaRegEye className="text-[#807F7F]" />
               ) : (
