@@ -11,7 +11,7 @@ export const NavbarAdmin = () => {
   };
   return (
     <header
-      className={`flex items-center justify-between w-full h-[6rem] px-8 shadow-md duration-150 transition-all`}>
+      className={`flex items-center justify-between w-full h-[5rem] px-8 shadow-md duration-150 transition-all`}>
       <div className="flex items-center gap-5">
         <button className="block lg:hidden" onClick={toggleSidebarMobile}>
           <RxHamburgerMenu className="text-3xl" />

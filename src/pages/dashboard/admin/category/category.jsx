@@ -1,10 +1,11 @@
 import {
   ButtonLinkAdmin,
+  ButtonPaginate,
   LimitSelect,
   Search,
   TableCategoryAdmin,
-} from "../../../components";
-import { ContentAdminLayout } from "../../../layouts";
+} from "../../../../components";
+import { ContentAdminLayout } from "../../../../layouts";
 
 export const CategoryAdmin = () => {
   const list = [
@@ -58,14 +59,22 @@ export const CategoryAdmin = () => {
 
   return (
     <ContentAdminLayout title="Category" list={list}>
-      <div className="flex items-center mt-5 justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-0 mt-5 lg:justify-between">
         <LimitSelect options={limitData} />
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-6">
           <Search />
           <ButtonLinkAdmin href="/dashboard-admin/category/add" />
         </div>
       </div>
       <TableCategoryAdmin data={dataTable} />
+      <div className="w-full flex justify-end">
+        <ButtonPaginate
+          next="https://google.com"
+          previous="https://google.com"
+          page={1}
+          total={10}
+        />
+      </div>
     </ContentAdminLayout>
   );
 };

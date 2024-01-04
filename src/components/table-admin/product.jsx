@@ -9,7 +9,7 @@ export const TableProductAdmin = ({ data }) => {
   }
 
   return (
-    <section className="container w-full mx-auto py-6 overflow-x-auto">
+    <section className="container w-full mx-auto pt-4 pb-1 overflow-x-auto">
       <table className="min-w-full w-full table bg-white border border-black shadow-md">
         <thead className="w-full bg-[#A6CEF2] border-black text-xl font-black">
           <tr>

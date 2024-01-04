@@ -1,4 +1,9 @@
-import { LimitSelect, Search, TableTransaksiAdmin } from "../../../components";
+import {
+  ButtonPaginate,
+  LimitSelect,
+  Search,
+  TableTransaksiAdmin,
+} from "../../../components";
 import { ContentAdminLayout } from "../../../layouts";
 
 export const TransaksiAdmin = () => {
@@ -62,6 +67,14 @@ export const TransaksiAdmin = () => {
         <Search />
       </div>
       <TableTransaksiAdmin data={dataTable} />
+      <div className="w-full flex justify-end">
+        <ButtonPaginate
+          next="https://google.com"
+          previous="https://google.com"
+          page={1}
+          total={6}
+        />
+      </div>
     </ContentAdminLayout>
   );
 };

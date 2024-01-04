@@ -1,5 +1,6 @@
 import {
   ButtonLinkAdmin,
+  ButtonPaginate,
   LimitSelect,
   Search,
   TableGalleryAdmin,
@@ -66,6 +67,14 @@ export const GalleryAdmin = () => {
         </div>
       </div>
       <TableGalleryAdmin data={dataTable} />
+      <div className="w-full flex justify-end">
+        <ButtonPaginate
+          next="https://google.com"
+          previous="https://google.com"
+          page={1}
+          total={8}
+        />
+      </div>
     </ContentAdminLayout>
   );
 };

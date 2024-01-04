@@ -5,8 +5,15 @@ import { Suspense } from "react";
 import { LazyLoading } from "./components";
 import { SignIn, SignUp } from "./pages";
 import { lazily } from "react-lazily";
-const { HomeAdmin, CategoryAdmin, ProductAdmin, GalleryAdmin, TransaksiAdmin } =
-  lazily(() => import("./pages/dashboard"));
+const {
+  HomeAdmin,
+  CategoryAdmin,
+  ProductAdmin,
+  GalleryAdmin,
+  TransaksiAdmin,
+  AddCategory,
+  EditCategory,
+} = lazily(() => import("./pages/dashboard"));
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +52,22 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<LazyLoading />}>
             <CategoryAdmin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "category/add",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <AddCategory />
+          </Suspense>
+        ),
+      },
+      {
+        path: "category/edit/:id",
+        element: (
+          <Suspense fallback={<LazyLoading />}>
+            <EditCategory />
           </Suspense>
         ),
       },
@@ -91,8 +114,7 @@ export const router = createBrowserRouter([
             </p>
             <Link
               href="/"
-              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
-            >
+              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
               Kembali
             </Link>
           </div>
