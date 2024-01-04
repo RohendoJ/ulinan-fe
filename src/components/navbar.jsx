@@ -2,12 +2,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { LuX, LuMenu, LuChevronDown, LuChevronUp } from "react-icons/lu";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { getToken } from "../utils/token";
-
+import { getToken, removeToken } from "../utils/token";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../services/axios";
+import { FaRegUser } from "react-icons/fa6";
+import { MdLogout } from "react-icons/md";
+import Swal from "sweetalert2";
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const categoryRef = useRef(null);
+  const profileRef = useRef(null);
   const navigate = useNavigate();
 
   const toggleOpen = () => {
@@ -16,6 +22,10 @@ export const Navbar = () => {
 
   const toggleCategoryOpen = () => {
     setCategoryOpen(!categoryOpen);
+  };
+
+  const toggleProfileOpen = () => {
+    setProfileOpen(!profileOpen);
   };
 
   useEffect(() => {
@@ -32,7 +42,34 @@ export const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   const token = getToken();
+
+  const useGetProfile = () => {
+    return useQuery({
+      queryKey: ["profile"],
+      queryFn: async () => {
+        const { data } = await api.get("/api/user/me");
+
+        return data;
+      },
+    });
+  };
+
+  const { data } = useGetProfile();
 
   return (
     <nav className="w-full h-[70px] shadow-md flex justify-between items-center px-10 z-20 fixed bg-white">
@@ -177,8 +214,59 @@ export const Navbar = () => {
       </section>
 
       {token ? (
-        <section className="w-[10%] hidden xl:flex justify-center items-center">
-          <img className="w-full" src="" alt="profile" />
+        <section
+          onClick={toggleProfileOpen}
+          className="w-[10%] hidden xl:flex justify-center items-center text-[#2284DF] text-[2rem] gap-2 hover:cursor-pointer relative"
+        >
+          <img
+            className="w-[40px] h-[40px] rounded-full select-none"
+            src={data?.avatar}
+            alt="profile"
+          />
+          {profileOpen ? (
+            <Fragment>
+              <LuChevronUp />
+              <motion.div
+                className="absolute w-[10vw] h-[12vh] bg-white shadow-md top-[135%] rounded-md flex flex-col justify-evenly"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+                ref={profileRef}
+              >
+                <div className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md">
+                  <FaRegUser className="text-[1.2rem] text-black" />
+                  <Link to={"/profile"} className="text-black text-[1.2rem]">
+                    Profile
+                  </Link>
+                </div>
+                <div
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Logout",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        removeToken();
+                        navigate("/");
+                      }
+                    });
+                  }}
+                  className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md"
+                >
+                  <MdLogout className="text-[1.2rem] rotate-180 text-black" />
+                  <div className="text-black text-[1.2rem]">Logout</div>
+                </div>
+              </motion.div>
+            </Fragment>
+          ) : (
+            <LuChevronDown />
+          )}
         </section>
       ) : (
         <section className="w-[15%] hidden xl:flex gap-3 justify-center items-center">
@@ -201,7 +289,7 @@ export const Navbar = () => {
         </section>
       )}
       <aside
-        className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] lg:py-0 pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 top-0 ${
+        className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] lg:py-0 pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 inset-y-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >

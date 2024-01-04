@@ -71,6 +71,7 @@ export const SignIn = () => {
             />
             <button
               onClick={togglePassword}
+              type="button"
               className="absolute inset-y-0 right-1"
             >
               {isShowPassword ? (
