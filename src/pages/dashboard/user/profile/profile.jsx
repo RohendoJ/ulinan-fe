@@ -16,12 +16,12 @@ export const ProfilePage = () => {
 
   const profileItems = [
     {
-      title: "Email / No. Telepon",
+      title: "Email",
       value: user?.email,
     },
     {
       title: "No. Telepon",
-      value: user?.email || "Belum ada data",
+      value: user?.phone || "Belum ada data",
     },
     {
       title: "Tanggal Lahir",

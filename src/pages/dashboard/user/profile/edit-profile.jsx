@@ -48,7 +48,7 @@ export const EditProfilePage = () => {
       },
     },
     {
-      title: "Email / No. Telepon",
+      title: "Email",
       value: user?.email,
       type: "text",
       onChange: (e) => {
