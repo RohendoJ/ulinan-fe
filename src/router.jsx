@@ -13,8 +13,10 @@ import {
   ProfilePage,
   SignIn,
   SignUp,
+  EditProfilePage,
 } from "./pages";
 import { AdminProtected, Protected } from "./utils/guard";
+import { EditProfilePassword } from "./pages/dashboard/user/profile/edit-password";
 
 const {
   HomeAdmin,
@@ -50,6 +52,22 @@ export const router = createBrowserRouter([
     element: (
       <Protected>
         <ProfilePage />
+      </Protected>
+    ),
+  },
+  {
+    path: "/profile/edit",
+    element: (
+      <Protected>
+        <EditProfilePage />
+      </Protected>
+    ),
+  },
+  {
+    path: "/profile/edit-password",
+    element: (
+      <Protected>
+        <EditProfilePassword />
       </Protected>
     ),
   },

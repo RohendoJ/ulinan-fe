@@ -126,21 +126,18 @@ export const Navbar = (props) => {
 
       <section
         onClick={toggleOpen}
-        className="flex xl:hidden w-[10%] justify-center items-center text-[2rem] text-[#2284DF]"
-      >
+        className="flex xl:hidden w-[10%] justify-center items-center text-[2rem] text-[#2284DF]">
         {open ? <LuX /> : <LuMenu />}
       </section>
 
       <section
         className={`w-[30%] ${
           props.dashboard ? "ml-[36%]" : "ml-0"
-        } xl:flex justify-around hidden select-none`}
-      >
+        } xl:flex justify-around hidden select-none`}>
         <div
           className="flex justify-center items-center gap-3 text-[#2284DF] hover:cursor-pointer relative"
           onClick={toggleCategoryOpen}
-          ref={categoryRef}
-        >
+          ref={categoryRef}>
           <h1 className="font-bold text-[1.2rem]">List Kategori</h1>
           {categoryOpen ? (
             <Fragment>
@@ -150,8 +147,7 @@ export const Navbar = (props) => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.2 }}
-              >
+                transition={{ duration: 0.2 }}>
                 <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
                   <div className="w-[55%] h-full">
                     <img
@@ -241,8 +237,7 @@ export const Navbar = (props) => {
 
         <Link
           to={"/history"}
-          className="text-[#2284DF] font-bold text-[1.2rem]"
-        >
+          className="text-[#2284DF] font-bold text-[1.2rem]">
           History
         </Link>
 
@@ -255,10 +250,9 @@ export const Navbar = (props) => {
         <section
           onClick={toggleProfileOpen}
           ref={profileRef}
-          className="select-none w-[10%] hidden xl:flex justify-center items-center text-[#2284DF] text-[2rem] gap-2 hover:cursor-pointer relative"
-        >
+          className="select-none w-[10%] hidden xl:flex justify-center items-center text-[#2284DF] text-[2rem] gap-2 hover:cursor-pointer relative">
           <img
-            className="w-[40px] h-[40px] rounded-full select-none"
+            className="w-[40px] h-[40px] rounded-full select-none object-cover bg-center bg-no-repeat"
             src={data?.avatar}
             alt="profile"
           />
@@ -270,19 +264,16 @@ export const Navbar = (props) => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.2 }}
-              >
+                transition={{ duration: 0.2 }}>
                 <Link
                   to={"/profile"}
-                  className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md"
-                >
+                  className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md">
                   <FaRegUser className="text-[1.2rem] text-black" />
                   <p className="text-black text-[1.2rem]">Profile</p>
                 </Link>
                 <div
                   onClick={alertLogout}
-                  className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md"
-                >
+                  className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md">
                   <MdLogout className="text-[1.2rem] rotate-180 text-black" />
                   <div className="text-black text-[1.2rem]">Logout</div>
                 </div>
@@ -298,16 +289,14 @@ export const Navbar = (props) => {
             className="border-2 border-[#2284DF] rounded-xl w-full h-10 font-bold text-[#2284DF]"
             onClick={() => {
               navigate("/auth/sign-in");
-            }}
-          >
+            }}>
             Masuk
           </button>
           <button
             className="bg-[#2284DF] rounded-xl text-white w-full h-10"
             onClick={() => {
               navigate("/auth/sign-up");
-            }}
-          >
+            }}>
             Daftar
           </button>
         </section>
@@ -316,8 +305,7 @@ export const Navbar = (props) => {
         className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 inset-y-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
-        ref={sideRef}
-      >
+        ref={sideRef}>
         <img className="w-[100px]" src="/auth-logo.png" alt="ulinan" />
         <div className="flex flex-col gap-5 mb-[45vh] text-[#2284DF] font-bold text-[1.2rem]">
           <Link to={"/category"}>Kategori</Link>
@@ -331,8 +319,7 @@ export const Navbar = (props) => {
             <section className="w-full flex flex-col items-center gap-5">
               <Link
                 to={"/profile"}
-                className="w-full flex justify-around items-center p-2 bg-white border border-slate-300 rounded-md"
-              >
+                className="w-full flex justify-around items-center p-2 bg-white border border-slate-300 rounded-md">
                 <img
                   src={data?.avatar}
                   alt="profile"
@@ -342,8 +329,7 @@ export const Navbar = (props) => {
               </Link>
               <button
                 onClick={alertLogout}
-                className="w-full bg-red-400 text-white p-2 rounded-md"
-              >
+                className="w-full bg-red-400 text-white p-2 rounded-md">
                 Log out
               </button>
             </section>
@@ -353,16 +339,14 @@ export const Navbar = (props) => {
                 className="border-2 border-[#2284DF] rounded-xl w-full h-12 font-bold text-[#2284DF]"
                 onClick={() => {
                   navigate("/auth/sign-in");
-                }}
-              >
+                }}>
                 Masuk
               </button>
               <button
                 className="bg-[#2284DF] rounded-xl text-white w-full h-12"
                 onClick={() => {
                   navigate("/auth/sign-up");
-                }}
-              >
+                }}>
                 Daftar
               </button>
             </Fragment>
