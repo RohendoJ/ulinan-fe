@@ -320,11 +320,11 @@ export const Navbar = (props) => {
       >
         <img className="w-[100px]" src="/auth-logo.png" alt="ulinan" />
         <div className="flex flex-col gap-5 mb-[45vh] text-[#2284DF] font-bold text-[1.2rem]">
-          <h1>Kategori</h1>
+          <Link to={"/category"}>Kategori</Link>
 
-          <h1>History</h1>
+          <Link to={"/history"}>History</Link>
 
-          <h1>Cart</h1>
+          <Link to={"/cart"}>Cart</Link>
         </div>
         <div className="w-[80%] flex flex-col gap-5 lg:mb-[3vh]">
           {token ? (

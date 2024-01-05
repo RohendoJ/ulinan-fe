@@ -4,7 +4,7 @@ import { FooterUser } from "../../../components";
 
 export const Cart = () => {
   return (
-    <main className="w-full h-screen flex flex-col overflow-x-hidden">
+    <main className="w-full h-auto xl:h-screen flex flex-col overflow-x-hidden">
       <Navbar dashboard />
 
       <section className="text-[#2284DF] mt-[100px] ml-[8%] hover:cursor-pointer">
@@ -16,9 +16,9 @@ export const Cart = () => {
 
       <h1 className="text-black font-bold text-[1.5rem] pl-[8%] mt-5">Cart</h1>
 
-      <section className="w-full h-full flex mt-3">
-        <div className="max-h-[400px] xl:max-h-[270px] w-full xl:w-[65%] overflow-auto ml-[8%] pr-[10%] md:pr-0 xl:ml-0">
-          <table className="w-[80%] md:w-[85%] xl:w-[85%] ml-[12%] border-collapse text-center">
+      <section className="w-full h-full flex flex-col xl:flex-row mt-3">
+        <div className="max-h-[200px] xl:max-h-[270px] w-full xl:w-[65%] overflow-auto pr-[10%] md:pr-0 ml-[10%] xl:ml-0">
+          <table className="w-[80%] md:w-[85%] xl:w-[85%] xl:ml-[12%] border-collapse text-center">
             <thead className="sticky top-0 border-b border-[#807F7F] bg-white">
               <tr>
                 <th className="py-2 px-8 md:px-4">No</th>
@@ -42,8 +42,8 @@ export const Cart = () => {
           </table>
         </div>
 
-        <section className="w-[35%] h-full flex justify-center">
-          <div className="w-[80%] bg-white h-[80%] rounded-xl shadow-md border border-gray-400 flex flex-col items-center justify-between">
+        <section className="w-full xl:w-[35%] h-full flex justify-center">
+          <div className="w-[80%] md:w-[50%] lg:w-[40%] xl:w-[80%] bg-white h-[310px] xl:h-[71%] rounded-xl shadow-md border border-gray-400 flex flex-col items-center justify-between mt-10 xl:mt-0">
             <h1 className="text-[#2284DF] font-extrabold text-2xl mt-4">
               Checkout Information
             </h1>
