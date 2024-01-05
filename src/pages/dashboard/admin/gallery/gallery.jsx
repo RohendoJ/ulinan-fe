@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
   ButtonLinkAdmin,
   ButtonPaginate,
@@ -6,6 +7,7 @@ import {
   TableGalleryAdmin,
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
+import { useDeleteProduct, useGetProducts } from "../product";
 
 export const GalleryAdmin = () => {
   const list = [
@@ -14,35 +16,31 @@ export const GalleryAdmin = () => {
     },
   ];
 
-  const dataTable = [
-    {
-      id: 1,
-      name: "Paket Event",
-      description: "Paket event terdiridari beberapa",
-    },
-    {
-      id: 2,
-      name: "Wisata",
-      description: "Wisata-wisata yang ada di daerah garut",
-    },
-    {
-      id: 3,
-      name: "Event",
-      description: "Acara yang menarik dan seru untuk dihadiri",
-    },
-    {
-      id: 4,
-      name: "Foods",
-      description: "Makanan tradisional dari berbagai daerah",
-    },
-    {
-      id: 5,
-      name: "Entertaiment",
-      description: "tempat-tempat Bermedia yang sangat seru",
-    },
-  ];
+  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState(5);
+
+  const { data, isLoading, refetch } = useGetProducts({
+    limit: limit,
+    page: page,
+    search: searchQuery,
+  });
+
+  const dataTable = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
+  const meta = useMemo(() => {
+    return data?.meta;
+  }, [data?.meta]);
+
+  const { mutate } = useDeleteProduct();
 
   const limitData = [
+    {
+      value: 5,
+      name: "5",
+    },
     {
       value: 10,
       name: "10",
@@ -57,22 +55,53 @@ export const GalleryAdmin = () => {
     },
   ];
 
+  const onNext = () => {
+    if (meta?.next_page) {
+      setPage(meta?.next_page);
+    }
+  };
+
+  const onPrevious = () => {
+    if (meta?.prev_page) {
+      setPage(meta?.prev_page);
+    }
+  };
+
+  const search = (e) => {
+    setSearchQuery(e.target.value);
+    setPage(1);
+  };
+
   return (
     <ContentAdminLayout title="Galeri" list={list}>
       <div className="flex items-center mt-5 justify-between">
-        <LimitSelect options={limitData} />
+        <LimitSelect
+          options={limitData}
+          onChange={(e) => setLimit(e.target.value)}
+        />
         <div className="flex items-center gap-6">
-          <Search />
+          <Search onChange={search} />
           <ButtonLinkAdmin href="/dashboard-admin/galeri/add" />
         </div>
       </div>
-      <TableGalleryAdmin data={dataTable} />
+      <TableGalleryAdmin
+        data={dataTable}
+        isLoading={isLoading}
+        onDelete={(id) => {
+          mutate(id, {
+            onSuccess: () => refetch(),
+          });
+        }}
+      />
       <div className="w-full flex justify-end">
         <ButtonPaginate
-          next="https://google.com"
-          previous="https://google.com"
-          page={1}
-          total={8}
+          onFirst={() => setPage(1)}
+          onLast={() => setPage(meta?.total_page)}
+          onNext={onNext}
+          onPrevious={onPrevious}
+          onClickPage={(index) => setPage(index)}
+          page={meta?.current_page}
+          total={meta?.total_page}
         />
       </div>
     </ContentAdminLayout>

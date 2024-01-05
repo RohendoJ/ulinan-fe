@@ -9,27 +9,26 @@ import { useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { useAddGalleryProduct } from "./hooks";
-import { useGetProducts } from "../product";
+import { useGetProductById } from "../product";
+import { useParams } from "react-router-dom";
 
-export const AddGallery = () => {
-  const [image, setImage] = useState([]);
-
+export const EditGallery = () => {
+  const { id } = useParams();
   const list = [
     {
       name: "Gallery",
     },
   ];
 
-  const { data } = useGetProducts();
+  const { data } = useGetProductById(id);
+
+  const [image, setImage] = useState([]);
 
   const product = useMemo(() => {
-    return data?.data?.map((item) => {
-      return {
-        value: item?.id,
-        name: item?.name,
-      };
-    });
-  }, [data?.data]);
+    return data?.data;
+  }, [data]);
+
+  console.log(product);
 
   const navigate = useNavigate();
 
@@ -53,12 +52,12 @@ export const AddGallery = () => {
 
   const { mutate } = useAddGalleryProduct();
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async () => {
     try {
       image.map((item) => {
         mutate({
           image: item.image,
-          product_id: Number(data.product),
+          product_id: id,
         });
       });
 
@@ -92,15 +91,17 @@ export const AddGallery = () => {
           <Select
             name="product"
             label="Produk"
-            placeholder="Pilih Produk"
-            options={product}
+            placeholder={product?.name}
+            disabled
+            options={[]}
           />
 
           <UploadDragField
             name="image"
             label="image"
             height="h-[25rem]"
-            defaultImages={[]}
+            defaultImages={product?.image}
+            productId={id}
             onChange={onDrop}
           />
 

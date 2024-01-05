@@ -1,19 +1,44 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { ButtonLinkAdmin, Select, TextField } from "../../../../components";
+import {
+  ButtonLinkAdmin,
+  Select,
+  Spinner,
+  TextField,
+} from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
+import { useGetProductById, useUpdateProduct } from "./hooks";
+import { useEffect, useMemo, useState } from "react";
+import { useGetCategory } from "../category";
 
 export const EditProduct = () => {
   const { id } = useParams();
-
-  console.log(id);
 
   const list = [
     {
       name: "Product",
     },
   ];
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { data } = useGetCategory();
+
+  const category = useMemo(() => {
+    return data?.data?.map((item) => {
+      return {
+        value: item?.id,
+        name: item?.name,
+      };
+    });
+  }, [data?.data]);
+
+  const { data: dataProduct } = useGetProductById(id);
+
+  const product = useMemo(() => {
+    return dataProduct?.data;
+  }, [dataProduct?.data]);
 
   const navigate = useNavigate();
 
@@ -28,23 +53,66 @@ export const EditProduct = () => {
     },
   });
 
-  const { handleSubmit } = form;
+  const { handleSubmit, reset, setValue } = form;
+
+  const { mutate } = useUpdateProduct(id);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log(data);
+      setIsLoading(true);
+      mutate(
+        {
+          name: data?.product_name,
+          price: Number(data?.product_price),
+          category_id: Number(data?.product_category),
+          address: data?.product_address,
+          description: data?.product_information,
+        },
+        {
+          onSuccess: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Sukses Menyimpan Product",
+              icon: "success",
+              showConfirmButton: false,
+            });
 
-      Swal.fire({
-        title: "Sukses Menyimpan Product",
-        icon: "success",
-        showConfirmButton: false,
-      });
-
-      navigate("/dashboard-admin/product");
+            navigate("/dashboard-admin/product");
+          },
+        },
+        {
+          onError: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Gagal Menyimpan Product",
+              icon: "error",
+              showConfirmButton: false,
+            });
+          },
+        }
+      );
     } catch (error) {
       Promise.reject(error);
     }
   });
+
+  useEffect(() => {
+    reset({
+      product_name: product?.name,
+      product_price: product?.price,
+      product_address: product?.address,
+      product_information: product?.description,
+    });
+  }, [product, reset, setValue]);
+
+  useEffect(() => {
+    const body = document.body;
+    if (isLoading) {
+      body.classList.add("overflow-hidden");
+    } else {
+      body.classList.remove("overflow-hidden");
+    }
+  }, [isLoading]);
 
   return (
     <ContentAdminLayout
@@ -69,8 +137,8 @@ export const EditProduct = () => {
           <Select
             name="product_category"
             label="Kategori"
-            placeholder="Pilih kategori"
-            options={[{ value: "1", name: "Kategori 1" }]}
+            placeholder={product?.category || "Pilih kategori"}
+            options={category}
           />
           <TextField
             name="product_address"
@@ -93,8 +161,9 @@ export const EditProduct = () => {
             </ButtonLinkAdmin>
             <button
               type="submit"
-              className="flex items-center justify-center border-2 h-11 px-6 rounded-xl text-lg bg-[#2284DF] text-white">
-              Simpan
+              disabled={isLoading}
+              className="flex items-center justify-center border-2 h-11 px-6 disabled:w-[8rem] disabled:cursor-wait rounded-xl text-lg bg-[#2284DF] text-white">
+              {isLoading ? <Spinner width="w-5" height="h-5" /> : "Simpan"}
             </button>
           </div>
         </form>

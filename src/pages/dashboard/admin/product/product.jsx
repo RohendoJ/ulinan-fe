@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
   ButtonLinkAdmin,
   ButtonPaginate,
@@ -6,6 +7,7 @@ import {
   TableProductAdmin,
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
+import { useDeleteProduct, useGetProducts } from "./hooks";
 
 export const ProductAdmin = () => {
   const list = [
@@ -13,40 +15,31 @@ export const ProductAdmin = () => {
       name: "Product",
     },
   ];
-  const dataTable = [
-    {
-      id: 1,
-      name: "Darajat pas",
-      price: 10000,
-      category: "Wisata",
-    },
-    {
-      id: 2,
-      name: "Sayang helang",
-      price: 10000,
-      category: "Wisata",
-    },
-    {
-      id: 3,
-      name: "Talaga Bodas",
-      price: 10000,
-      category: "Wisata",
-    },
-    {
-      id: 4,
-      name: "Papandayan",
-      price: 10000,
-      category: "Entertainment",
-    },
-    {
-      id: 5,
-      name: "Gunung Putri",
-      price: 10000,
-      category: "Paket Event",
-    },
-  ];
+  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState(5);
+
+  const { data, isLoading, refetch } = useGetProducts({
+    limit: limit,
+    page: page,
+    search: searchQuery,
+  });
+
+  const dataTable = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
+  const meta = useMemo(() => {
+    return data?.meta;
+  }, [data?.meta]);
+
+  const { mutate } = useDeleteProduct();
 
   const limitData = [
+    {
+      value: 5,
+      name: "5",
+    },
     {
       value: 10,
       name: "10",
@@ -61,22 +54,53 @@ export const ProductAdmin = () => {
     },
   ];
 
+  const onNext = () => {
+    if (meta?.next_page) {
+      setPage(meta?.next_page);
+    }
+  };
+
+  const onPrevious = () => {
+    if (meta?.prev_page) {
+      setPage(meta?.prev_page);
+    }
+  };
+
+  const search = (e) => {
+    setSearchQuery(e.target.value);
+    setPage(1);
+  };
+
   return (
     <ContentAdminLayout title="Product" list={list}>
       <div className="flex items-center mt-5 justify-between">
-        <LimitSelect options={limitData} />
+        <LimitSelect
+          options={limitData}
+          onChange={(e) => setLimit(e.target.value)}
+        />
         <div className="flex items-center gap-6">
-          <Search />
+          <Search onChange={search} />
           <ButtonLinkAdmin href="/dashboard-admin/product/add" />
         </div>
       </div>
-      <TableProductAdmin data={dataTable} />
+      <TableProductAdmin
+        data={dataTable}
+        isLoading={isLoading}
+        onDelete={(id) => {
+          mutate(id, {
+            onSuccess: () => refetch(),
+          });
+        }}
+      />
       <div className="w-full flex justify-end">
         <ButtonPaginate
-          next="https://google.com"
-          previous="https://google.com"
-          page={1}
-          total={7}
+          onFirst={() => setPage(1)}
+          onLast={() => setPage(meta?.total_page)}
+          onNext={onNext}
+          onPrevious={onPrevious}
+          onClickPage={(index) => setPage(index)}
+          page={meta?.current_page}
+          total={meta?.total_page}
         />
       </div>
     </ContentAdminLayout>

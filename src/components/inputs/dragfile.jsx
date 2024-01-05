@@ -3,12 +3,15 @@ import { useDropzone } from "react-dropzone";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { FaArrowDownLong } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
+import { useDeleteImageProduct } from "../../pages/dashboard/admin/gallery/hooks";
+import Swal from "sweetalert2";
 
 export const UploadDragField = ({
   label,
   name,
   defaultImages,
-  isCategory,
+  productId,
+  isSingle = false,
   required,
   disabled,
   onChange,
@@ -18,23 +21,24 @@ export const UploadDragField = ({
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      if (isCategory) {
+      if (isSingle) {
         setImages(URL.createObjectURL(acceptedFiles[0]));
       } else {
         setImages([
           ...images,
           {
-            id: (Math.random() * 1000).toString() + "-" + new Date().getTime(),
             name: acceptedFiles[0].name,
-            image: URL.createObjectURL(acceptedFiles[0]),
+            image_url: URL.createObjectURL(acceptedFiles[0]),
           },
         ]);
       }
     },
-    [images, isCategory]
+    [images, isSingle]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const { mutate } = useDeleteImageProduct(productId);
 
   useEffect(() => {
     if (defaultImages) {
@@ -78,7 +82,7 @@ export const UploadDragField = ({
             </Fragment>
           ) : (
             <Fragment>
-              {isCategory && images ? (
+              {isSingle && images ? (
                 <div className="relative pointer-events-auto">
                   <button
                     type="button"
@@ -88,6 +92,7 @@ export const UploadDragField = ({
                       const inputFile = document.getElementById(name);
 
                       setImages(null);
+
                       inputFile.value = null;
                     }}
                     className="flex items-center justify-center rounded-full w-6 h-6 absolute top-4 right-4 bg-white bg-opacity-80">
@@ -99,7 +104,7 @@ export const UploadDragField = ({
                     className="w-[13rem] h-[13rem] object-cover"
                   />
                 </div>
-              ) : !isCategory && images?.length > 0 ? (
+              ) : !isSingle && images?.length > 0 ? (
                 <div className="relative flex items-center gap-2">
                   {images.map((item, index) => (
                     <div key={index} className="relative pointer-events-auto">
@@ -110,18 +115,42 @@ export const UploadDragField = ({
                           e.stopPropagation();
                           const inputFile = document.getElementById(name);
 
-                          const newImages = images.filter(
-                            (image) => image.id !== item.id
-                          );
+                          if (item?.id && productId) {
+                            const newImage = images.find((image) => {
+                              return item.id === image.id;
+                            });
 
-                          setImages(newImages);
+                            console.log(newImage);
+
+                            mutate(newImage.id, {
+                              onSuccess: () => {
+                                setImages(
+                                  images.filter(
+                                    (image) => image.id !== newImage.id
+                                  )
+                                );
+                              },
+                              onError: () => {
+                                Swal.fire({
+                                  title: "Gagal Menghapus Gambar",
+                                  icon: "error",
+                                  showConfirmButton: false,
+                                });
+                              },
+                            });
+                          } else {
+                            const newImages = images.filter(
+                              (image) => image.image_url !== item.image_url
+                            );
+                            setImages(newImages);
+                          }
                           inputFile.value = null;
                         }}
                         className="flex items-center justify-center rounded-full w-6 h-6 absolute top-4 right-4 bg-white bg-opacity-80">
                         <RxCross2 />
                       </button>
                       <img
-                        src={item.image}
+                        src={item.image_url}
                         alt="preview"
                         className="w-[13rem] h-[13rem] object-cover"
                       />

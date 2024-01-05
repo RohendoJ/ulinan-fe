@@ -1,17 +1,19 @@
 import { FormProvider, useForm } from "react-hook-form";
 import {
   ButtonLinkAdmin,
+  Spinner,
   TextField,
   UploadDragField,
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { useCreateCategory } from "./hooks";
 
 export const AddCategory = () => {
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const list = [
     {
@@ -39,22 +41,46 @@ export const AddCategory = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      mutate({
-        ...data,
-        image,
-      });
+      setIsLoading(true);
+      mutate(
+        {
+          ...data,
+          image,
+        },
+        {
+          onSuccess: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Sukses Menambahkan Kategori",
+              icon: "success",
+              showConfirmButton: false,
+            });
 
-      await Swal.fire({
-        title: "Sukses Menambahkan Kategori",
-        icon: "success",
-        showConfirmButton: false,
-      });
-
-      navigate("/dashboard-admin/category");
+            navigate("/dashboard-admin/category");
+          },
+          onError: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Gagal Menambahkan Kategori",
+              icon: "error",
+              showConfirmButton: false,
+            });
+          },
+        }
+      );
     } catch (error) {
       Promise.reject(error);
     }
   });
+
+  useEffect(() => {
+    const body = document.body;
+    if (isLoading) {
+      body.classList.add("overflow-hidden");
+    } else {
+      body.classList.remove("overflow-hidden");
+    }
+  }, [isLoading]);
 
   return (
     <ContentAdminLayout
@@ -80,7 +106,8 @@ export const AddCategory = () => {
           <UploadDragField
             name="image"
             label="image"
-            defaultImages={[]}
+            defaultImages={null}
+            isSingle
             onChange={onDrop}
           />
 
@@ -93,8 +120,9 @@ export const AddCategory = () => {
             </ButtonLinkAdmin>
             <button
               type="submit"
-              className="flex items-center justify-center border-2 h-11 px-6 rounded-xl text-lg bg-[#2284DF] text-white">
-              Tambah
+              disabled={isLoading}
+              className="flex items-center justify-center border-2 h-11 px-6 disabled:w-[8rem] disabled:cursor-wait rounded-xl text-lg bg-[#2284DF] text-white">
+              {isLoading ? <Spinner width="w-5" height="h-5" /> : "Tambah"}
             </button>
           </div>
         </form>

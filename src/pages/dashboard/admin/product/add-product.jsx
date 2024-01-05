@@ -1,8 +1,16 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { ButtonLinkAdmin, Select, TextField } from "../../../../components";
+import {
+  ButtonLinkAdmin,
+  Select,
+  Spinner,
+  TextField,
+} from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import { useCreateProduct } from "./hooks";
+import { useGetCategory } from "../category";
+import { useEffect, useMemo, useState } from "react";
 
 export const AddProduct = () => {
   const list = [
@@ -10,6 +18,21 @@ export const AddProduct = () => {
       name: "Product",
     },
   ];
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { data } = useGetCategory();
+
+  const category = useMemo(() => {
+    return data?.data?.map((item) => {
+      return {
+        value: item?.id,
+        name: item?.name,
+      };
+    });
+  }, [data?.data]);
+
+  const { mutate } = useCreateProduct();
 
   const navigate = useNavigate();
 
@@ -28,19 +51,49 @@ export const AddProduct = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log(data);
+      setIsLoading(true);
+      mutate(
+        {
+          name: data?.product_name,
+          price: Number(data?.product_price),
+          category_id: Number(data?.product_category),
+          address: data?.product_address,
+          description: data?.product_information,
+        },
 
-      Swal.fire({
-        title: "Sukses Menambahkan Product",
-        icon: "success",
-        showConfirmButton: false,
-      });
-
-      navigate("/dashboard-admin/product");
+        {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Sukses Menambahkan Product",
+              icon: "success",
+              showConfirmButton: false,
+            });
+            setIsLoading(false);
+            navigate("/dashboard-admin/product");
+          },
+          onError: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Gagal Menambahkan Product",
+              icon: "error",
+              showConfirmButton: false,
+            });
+          },
+        }
+      );
     } catch (error) {
       Promise.reject(error);
     }
   });
+
+  useEffect(() => {
+    const body = document.body;
+    if (isLoading) {
+      body.classList.add("overflow-hidden");
+    } else {
+      body.classList.remove("overflow-hidden");
+    }
+  }, [isLoading]);
 
   return (
     <ContentAdminLayout
@@ -66,7 +119,7 @@ export const AddProduct = () => {
             name="product_category"
             label="Kategori"
             placeholder="Pilih kategori"
-            options={[{ value: "1", name: "Kategori 1" }]}
+            options={category}
           />
           <TextField
             name="product_address"
@@ -89,8 +142,9 @@ export const AddProduct = () => {
             </ButtonLinkAdmin>
             <button
               type="submit"
-              className="flex items-center justify-center border-2 h-11 px-6 rounded-xl text-lg bg-[#2284DF] text-white">
-              Tambah
+              disabled={isLoading}
+              className="flex items-center justify-center border-2 h-11 px-6 disabled:w-[8rem] disabled:cursor-wait rounded-xl text-lg bg-[#2284DF] text-white">
+              {isLoading ? <Spinner width="w-5" height="h-5" /> : "Tambah"}
             </button>
           </div>
         </form>

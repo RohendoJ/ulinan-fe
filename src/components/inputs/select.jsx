@@ -10,9 +10,10 @@ export const Select = ({
   required,
   errors,
   disabled,
+  statusState = "",
 }) => {
   const [isRotate, setIsRotate] = useState(false);
-  const [status, setStatus] = useState("Pilih Status");
+  const [status, setStatus] = useState(statusState);
 
   const { field } = useController({
     name,

@@ -1,6 +1,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import {
   ButtonLinkAdmin,
+  Spinner,
   TextField,
   UploadDragField,
 } from "../../../../components";
@@ -17,6 +18,7 @@ export const EditCategory = () => {
       name: "Category",
     },
   ];
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 
   const { data } = useGetCategoryById(id);
@@ -45,18 +47,34 @@ export const EditCategory = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      mutate({
-        ...data,
-        image,
-      });
+      setIsLoading(true);
+      mutate(
+        {
+          ...data,
+          image,
+        },
+        {
+          onSuccess: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Sukses Menyimpan Kategori",
+              icon: "success",
+              showConfirmButton: false,
+            });
 
-      await Swal.fire({
-        title: "Sukses Menyimpan Kategori",
-        icon: "success",
-        showConfirmButton: false,
-      });
+            navigate("/dashboard-admin/category");
+          },
 
-      navigate("/dashboard-admin/category");
+          onError: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Gagal Menyimpan Kategori",
+              icon: "error",
+              showConfirmButton: false,
+            });
+          },
+        }
+      );
     } catch (error) {
       Promise.reject(error);
     }
@@ -69,6 +87,15 @@ export const EditCategory = () => {
     });
     setImage(category?.image);
   }, [category, reset]);
+
+  useEffect(() => {
+    const body = document.body;
+    if (isLoading) {
+      body.classList.add("overflow-hidden");
+    } else {
+      body.classList.remove("overflow-hidden");
+    }
+  }, [isLoading]);
 
   return (
     <ContentAdminLayout
@@ -95,7 +122,8 @@ export const EditCategory = () => {
             name="image"
             label="image"
             onChange={onDrop}
-            isCategory
+            isSingle
+            productId={id}
             defaultImages={image}
           />
 
@@ -108,8 +136,9 @@ export const EditCategory = () => {
             </ButtonLinkAdmin>
             <button
               type="submit"
-              className="flex items-center justify-center border-2 h-11 px-6 rounded-xl text-lg bg-[#2284DF] text-white">
-              Simpan
+              disabled={isLoading}
+              className="flex items-center justify-center border-2 h-11 px-6 disabled:w-[8rem] disabled:cursor-wait rounded-xl text-lg bg-[#2284DF] text-white">
+              {isLoading ? <Spinner width="w-5" height="h-5" /> : "Simpan"}
             </button>
           </div>
         </form>

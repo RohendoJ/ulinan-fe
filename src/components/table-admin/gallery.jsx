@@ -4,9 +4,15 @@ import { Link } from "react-router-dom";
 import { DataNotFound } from "./error";
 import Swal from "sweetalert2";
 
-export const TableGalleryAdmin = ({ data }) => {
-  if (!data || data?.length === 0) {
+export const TableGalleryAdmin = ({ data, isLoading, onDelete }) => {
+  if ((!data && !isLoading) || (data?.length === 0 && !isLoading)) {
     return <DataNotFound />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container w-full h-[20rem] mx-auto my-6 bg-slate-200 animate-pulse"></div>
+    );
   }
 
   return (
@@ -38,7 +44,9 @@ export const TableGalleryAdmin = ({ data }) => {
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
                 <div className="w-full flex items-center justify-center gap-5">
-                  <Link className="flex items-center justify-center p-1 rounded-lg bg-[#F2C219]">
+                  <Link
+                    to={`/dashboard-admin/galeri/edit/${data?.id}`}
+                    className="flex items-center justify-center p-1 rounded-lg bg-[#F2C219]">
                     <MdEdit className="text-white text-2xl" />
                   </Link>
                   <button
@@ -55,11 +63,7 @@ export const TableGalleryAdmin = ({ data }) => {
                         iconColor: "#F2994A",
                       }).then((result) => {
                         if (result.isDenied) {
-                          console.log("Hapus");
-                        }
-
-                        if (result.isConfirmed) {
-                          console.log("Batal");
+                          onDelete(data?.id);
                         }
                       });
                     }}
