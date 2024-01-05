@@ -30,7 +30,11 @@ export const Profile = () => {
           </div>
         </div>
 
-        <IoIosArrowDown className="text-2xl text-gray-400" />
+        <IoIosArrowDown
+          className={`text-2xl text-gray-400 duration-200 ${
+            isDropDown && "rotate-180"
+          }`}
+        />
       </button>
       <DropDown
         alignPosition={"top-14 md:top-16 right-6 md:right-12"}

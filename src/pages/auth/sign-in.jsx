@@ -4,11 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "./hook.js";
 import { getUserRole, setToken } from "../../utils/token.js";
 import { Button } from "../../components/button.jsx";
+import Swal from "sweetalert2";
 
 export const SignIn = () => {
   const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,6 +22,7 @@ export const SignIn = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     login(
       {
@@ -28,18 +31,29 @@ export const SignIn = () => {
       },
       {
         onSuccess: (data) => {
+          setIsLoading(false);
           setToken(data.data.access_token);
           const token = getUserRole(data.data.access_token);
+
+          Swal.fire({
+            title: "Login Success",
+            icon: "success",
+            showConfirmButton: false,
+          });
 
           if (token === "admin") {
             return navigate("/dashboard-admin");
           }
+
           navigate("/");
         },
-      },
-      {
         onError: () => {
-          alert("Username atau Password anda salah");
+          setIsLoading(false);
+          Swal.fire({
+            title: "Login Failed",
+            icon: "error",
+            showConfirmButton: false,
+          });
         },
       }
     );
@@ -74,6 +88,7 @@ export const SignIn = () => {
               required
             />
             <button
+              type="button"
               onClick={togglePassword}
               className="absolute inset-y-0 right-1">
               {isShowPassword ? (
@@ -93,7 +108,9 @@ export const SignIn = () => {
       </section>
 
       <section className="w-full h-[25%] flex flex-col items-center justify-start gap-3 mt-[10%]">
-        <Button type="submit">Masuk</Button>
+        <Button type="submit" loading={isLoading}>
+          Masuk
+        </Button>
         <p className="text-[0.6rem] xl:text-[0.7rem]">
           Belum punya akun ?{" "}
           <Link to={"/auth/sign-up"} className="text-[#2284DF]">

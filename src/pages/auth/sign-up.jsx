@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "./hook.js";
 import { Button } from "../../components/button.jsx";
+import Swal from "sweetalert2";
 
 export const SignUp = () => {
   const [fullname, setFullname] = useState("");
@@ -12,6 +13,7 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsConfirmShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -20,14 +22,21 @@ export const SignUp = () => {
   const toggleConfirmPassword = () => {
     setIsConfirmShowPassword(!isShowConfirmPassword);
   };
+  const navigate = useNavigate();
 
   const { mutate: register } = useRegister();
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (confirmPassword !== password) {
-      alert("Password tidak sama");
+      setIsLoading(false);
+      return Swal.fire({
+        title: "Password Not Match",
+        icon: "error",
+        showConfirmButton: false,
+      });
     }
 
     register(
@@ -39,8 +48,22 @@ export const SignUp = () => {
         password_confirm: confirmPassword,
       },
       {
-        onSuccess: (data) => {
-          console.log(data);
+        onSuccess: () => {
+          setIsLoading(false);
+          Swal.fire({
+            title: "Register Success",
+            icon: "success",
+            showConfirmButton: false,
+          });
+          navigate("/auth/sign-in");
+        },
+        onError: () => {
+          setIsLoading(false);
+          Swal.fire({
+            title: "Register Failed",
+            icon: "error",
+            showConfirmButton: false,
+          });
         },
       }
     );
@@ -138,7 +161,9 @@ export const SignUp = () => {
       </section>
 
       <section className="w-full h-[25%] flex flex-col items-center justify-start gap-3 mt-[10%]">
-        <Button type="submit">Daftar</Button>
+        <Button type="submit" loading={isLoading}>
+          Daftar
+        </Button>
         <p className="text-[0.6rem] xl:text-[0.7rem]">
           Sudah punya akun ?{" "}
           <Link to={"/auth/sign-in"} className="text-[#2284DF]">
