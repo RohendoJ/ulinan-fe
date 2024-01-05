@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
-import { FooterUser, Navbar } from "../../../components";
-import { useGetUserMe } from "../../../components/navbar-admin/hooks";
+import { Link, useNavigate } from "react-router-dom";
+import { FooterUser, Navbar } from "../../../../components";
+import { useGetUserMe } from "../../../../components/navbar-admin/hooks";
 import { useMemo } from "react";
+import { removeToken } from "../../../../utils/token";
+import Swal from "sweetalert2";
 
 export const ProfilePage = () => {
   const { data } = useGetUserMe();
@@ -9,6 +11,8 @@ export const ProfilePage = () => {
   const user = useMemo(() => {
     return data;
   }, [data]);
+
+  const navigate = useNavigate();
 
   const profileItems = [
     {
@@ -36,15 +40,28 @@ export const ProfilePage = () => {
   const buttonItems = [
     {
       title: "Edit Profile",
-      onClick: () => {},
+      onClick: () => {
+        navigate("/profile/edit");
+      },
     },
     {
       title: "Edit Password",
-      onClick: () => {},
+      onClick: () => {
+        navigate("/profile/edit-password");
+      },
     },
     {
       title: "Log Out",
-      onClick: () => {},
+      onClick: () => {
+        removeToken();
+        Swal.fire({
+          icon: "success",
+          title: "Logout Success",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        navigate("/");
+      },
     },
   ];
 
@@ -59,8 +76,8 @@ export const ProfilePage = () => {
         Profile
       </div>
 
-      <section className="w-full h-full flex">
-        <div className="flex flex-col w-[50%] h-full px-[8%] gap-2 mb-[10vh]">
+      <section className="w-full h-full flex flex-col lg:flex-row gap-20 lg:gap-0 mb-[50vh] lg:mb-[10vh]">
+        <div className="flex flex-col w-full lg:w-[50%] h-full px-[8%] gap-2">
           <h1 className="text-black font-bold text-[2rem] mt-5">Profile</h1>
 
           <div className="w-full h-full flex flex-col gap-6 py-4 px-10">
@@ -68,7 +85,7 @@ export const ProfilePage = () => {
               <img
                 src={user?.avatar}
                 alt="profile"
-                className="rounded-full w-[8rem] h-[8rem]"
+                className={`rounded-full w-[8rem] h-[8rem] object-cover bg-center bg-no-repeat`}
               />
               <div className="flex flex-col gap-2 w-full justify-center text-black ">
                 <figcaption className="font-bold text-[1.3rem]">
@@ -89,7 +106,7 @@ export const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="w-[50%] h-full flex flex-col items-center justify-center gap-5">
+        <div className="w-full lg:w-[50%] lg:h-full flex flex-col items-center lg:justify-center gap-5">
           {buttonItems?.map((item, index) => (
             <button
               key={index}

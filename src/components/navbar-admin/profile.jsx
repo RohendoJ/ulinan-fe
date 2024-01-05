@@ -21,7 +21,7 @@ export const Profile = () => {
           <figure>
             <img
               src={data?.avatar}
-              className="h-10 w-10 rounded-full bg-gray-400"
+              className="h-10 w-10 rounded-full bg-gray-400 object-cover bg-center bg-no-repeat"
             />
           </figure>
           <div className="flex flex-col text-sm text-left justify-">

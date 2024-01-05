@@ -47,10 +47,15 @@ export const SignIn = () => {
 
           navigate("/");
         },
-        onError: () => {
+        onError: (err) => {
           setIsLoading(false);
           Swal.fire({
             title: "Login Failed",
+            text:
+              err?.response?.data?.message === "inccorrect password" ||
+              err?.response?.data?.message === "user not found"
+                ? "Email / Username or Password invalid"
+                : "Something went wrong",
             icon: "error",
             showConfirmButton: false,
           });

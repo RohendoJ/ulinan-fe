@@ -40,7 +40,12 @@ export const DropDown = ({ showDropdown, alignPosition, onMouseLeave }) => {
             }
 
             if (result.isConfirmed) {
-              Swal.fire("Success", "", "success");
+              Swal.fire({
+                title: "Logout Success",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
               removeToken();
               navigate("/auth/sign-in");
             }
