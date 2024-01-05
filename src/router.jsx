@@ -4,6 +4,7 @@ import { Home } from "./pages/dashboard/user/home";
 import { Suspense } from "react";
 import { LazyLoading } from "./components";
 import {
+  Cart,
   CategoryDetail,
   History,
   HomeCategory,
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
     path: "/category",
     element: <HomeCategory />,
   },
+  { path: "/cart", element: <Cart /> },
   { path: "/category/:name", element: <CategoryDetail /> },
   { path: "/category/:name/:product", element: <ProductDetail /> },
   {
@@ -173,7 +175,8 @@ export const router = createBrowserRouter([
             </p>
             <Link
               href="/"
-              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
+              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
+            >
               Kembali
             </Link>
           </div>
