@@ -9,8 +9,15 @@ import { Outlet, useNavigate } from "react-router-dom";
 export const AuthLayout = () => {
   const navigate = useNavigate();
 
+  const path = window.location.pathname;
+
   return (
-    <main className="w-screen h-[100dvh] md:h-screen bg-[url('/auth-sign-in.png')] bg-bottom bg-no-repeat bg-cover object-cover ">
+    <main
+      className={`w-screen h-[100dvh] md:h-screen bg-[url('/auth-sign-in.png')] bg-no-repeat bg-cover object-cover ${
+        path === "/auth/sign-up"
+          ? "bg-[url('/auth-sign-up.png')] bg-center"
+          : "bg-[url('/auth-sign-in.png')] bg-bottom"
+      }`}>
       <section className="bg-black bg-opacity-35 w-screen h-[100dvh] md:h-screen flex justify-center items-center xl:justify-start xl:flex-col">
         <section className="w-full h-[15%] items-center pl-[10%] hidden xl:flex">
           <img

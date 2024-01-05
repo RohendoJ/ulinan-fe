@@ -2,7 +2,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineLogout } from "react-icons/md";
 import { motion } from "framer-motion";
 import { removeToken } from "../utils/token";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const DropDown = ({ showDropdown, alignPosition, onMouseLeave }) => {
@@ -18,10 +18,12 @@ export const DropDown = ({ showDropdown, alignPosition, onMouseLeave }) => {
       }}
       className={`absolute flex flex-col items-center w-auto h-auto gap-1 bg-[#EBEAEA] rounded-b-lg shadow-xl duration-100 ${alignPosition}`}
       onMouseLeave={onMouseLeave}>
-      <button className="flex gap-2 w-full h-full text-base items-center justify-center py-3 px-5 duration-200 hover:bg-[#F5F6F7]">
+      <Link
+        to="/dashboard-admin/profile"
+        className="flex gap-2 w-full h-full text-base items-center justify-center py-3 px-5 duration-200 hover:bg-[#F5F6F7]">
         <FaRegUser className="text-base mr-2" />
         <span className="font-black">Profile</span>
-      </button>
+      </Link>
       <button
         onClick={() => {
           Swal.fire({

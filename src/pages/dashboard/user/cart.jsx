@@ -7,7 +7,7 @@ export const Cart = () => {
     <main className="w-full h-auto xl:h-screen flex flex-col overflow-x-hidden">
       <Navbar dashboard />
 
-      <section className="text-[#2284DF] mt-[100px] ml-[8%] hover:cursor-pointer">
+      <section className="w-fit text-[#2284DF] text-xl font-bold mt-[100px] ml-[8%]">
         <Link to={"/"} className="text-[#807F7F]">
           Home /
         </Link>{" "}
