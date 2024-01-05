@@ -8,7 +8,7 @@ import { api } from "../services/axios";
 import { FaRegUser } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 import Swal from "sweetalert2";
-export const Navbar = () => {
+export const Navbar = (props) => {
   const [open, setOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -114,13 +114,15 @@ export const Navbar = () => {
         />
       </section>
 
-      <section className="w-[30%] h-[50%] hidden xl:flex">
-        <input
-          type="text"
-          placeholder="Search"
-          className="bg-[#F5F6F7] h-full pl-5 rounded-md w-full border focus:outline-slate-400"
-        />
-      </section>
+      {!props.dashboard && (
+        <section className="w-[30%] h-[50%] hidden xl:flex">
+          <input
+            type="text"
+            placeholder="Search"
+            className="bg-[#F5F6F7] h-full pl-5 rounded-md w-full border focus:outline-slate-400"
+          />
+        </section>
+      )}
 
       <section
         onClick={toggleOpen}
@@ -129,10 +131,15 @@ export const Navbar = () => {
         {open ? <LuX /> : <LuMenu />}
       </section>
 
-      <section className="w-[30%] xl:flex justify-around hidden select-none">
+      <section
+        className={`w-[30%] ${
+          props.dashboard ? "ml-[36%]" : "ml-0"
+        } xl:flex justify-around hidden select-none`}
+      >
         <div
           className="flex justify-center items-center gap-3 text-[#2284DF] hover:cursor-pointer relative"
           onClick={toggleCategoryOpen}
+          ref={categoryRef}
         >
           <h1 className="font-bold text-[1.2rem]">List Kategori</h1>
           {categoryOpen ? (
@@ -144,7 +151,6 @@ export const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
-                ref={categoryRef}
               >
                 <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
                   <div className="w-[55%] h-full">
@@ -248,7 +254,8 @@ export const Navbar = () => {
       {token ? (
         <section
           onClick={toggleProfileOpen}
-          className="w-[10%] hidden xl:flex justify-center items-center text-[#2284DF] text-[2rem] gap-2 hover:cursor-pointer relative"
+          ref={profileRef}
+          className="select-none w-[10%] hidden xl:flex justify-center items-center text-[#2284DF] text-[2rem] gap-2 hover:cursor-pointer relative"
         >
           <img
             className="w-[40px] h-[40px] rounded-full select-none"
@@ -264,14 +271,14 @@ export const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
-                ref={profileRef}
               >
-                <div className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md">
+                <Link
+                  to={"/profile"}
+                  className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md"
+                >
                   <FaRegUser className="text-[1.2rem] text-black" />
-                  <Link to={"/profile"} className="text-black text-[1.2rem]">
-                    Profile
-                  </Link>
-                </div>
+                  <p className="text-black text-[1.2rem]">Profile</p>
+                </Link>
                 <div
                   onClick={alertLogout}
                   className="w-full h-1/2 flex justify-center items-center gap-4 hover:bg-gray-50 rounded-md"
@@ -306,17 +313,18 @@ export const Navbar = () => {
         </section>
       )}
       <aside
-        className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] lg:py-0 pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 inset-y-0 ${
+        className={`flex xl:hidden w-[75%] md:w-[35%] lg:w-[30%] h-[100dvh] bg-slate-50 absolute duration-500 z-10 flex-col py-[5vh] pl-[10vw] md:pl-[7vw] lg:pl-[5vw] gap-5 justify-between shadow-xl left-0 inset-y-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         ref={sideRef}
       >
-        <div className="flex flex-col gap-5 mt-[8vh]">
-          <h1 className="text-[#2284DF] font-bold text-[1.5rem]">Kategori</h1>
+        <img className="w-[100px]" src="/auth-logo.png" alt="ulinan" />
+        <div className="flex flex-col gap-5 mb-[45vh] text-[#2284DF] font-bold text-[1.2rem]">
+          <h1>Kategori</h1>
 
-          <h1 className="text-[#2284DF] font-bold text-[1.5rem]">History</h1>
+          <h1>History</h1>
 
-          <h1 className="text-[#2284DF] font-bold text-[1.5rem]">Cart</h1>
+          <h1>Cart</h1>
         </div>
         <div className="w-[80%] flex flex-col gap-5 lg:mb-[3vh]">
           {token ? (

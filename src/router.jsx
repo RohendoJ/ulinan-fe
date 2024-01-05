@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { LazyLoading } from "./components";
 import {
   CategoryDetail,
+  History,
   HomeCategory,
   ProductDetail,
   SignIn,
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Home />,
   },
+  { path: "/history", element: <History /> },
   {
     path: "/category",
     element: <HomeCategory />,

@@ -7,7 +7,7 @@ export const HomeCategory = () => {
     <main className="w-full xl:h-auto flex flex-col overflow-x-hidden">
       <Navbar />
 
-      <section className="text-[#2284DF] mt-[120px] ml-[8%] hover:cursor-pointer">
+      <section className="text-[#2284DF] mt-[100px] ml-[8%] hover:cursor-pointer">
         <Link to={"/"} className="text-[#807F7F]">
           Home /
         </Link>{" "}
