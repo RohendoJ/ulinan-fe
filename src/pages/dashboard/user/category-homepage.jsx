@@ -26,9 +26,11 @@ export const CategoryHomepage = (props) => {
   return (
     <Fragment>
       <section className="w-full px-[8%] mt-10 flex justify-between items-center">
-        <h1 className="font-bold text-xl">{props.heading}</h1>
+        <Link to={`/${props.heading}`} className="font-bold text-xl">
+          {props.heading}
+        </Link>
         {props.seeAll && (
-          <Link to={"/category/wisata"} className="text-[#2284DF]">
+          <Link to={`/category/${props.heading}`} className="text-[#2284DF]">
             See All
           </Link>
         )}
