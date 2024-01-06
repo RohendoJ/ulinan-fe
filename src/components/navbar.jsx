@@ -8,6 +8,8 @@ import { api } from "../services/axios";
 import { FaRegUser } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 import Swal from "sweetalert2";
+import { useGetUserMe } from "./navbar-admin/hooks";
+import { useGetCategory } from "../pages/dashboard/admin/category/hooks";
 export const Navbar = (props) => {
   const [open, setOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -90,18 +92,11 @@ export const Navbar = (props) => {
 
   const token = getToken();
 
-  const useGetProfile = () => {
-    return useQuery({
-      queryKey: ["profile"],
-      queryFn: async () => {
-        const { data } = await api.get("/api/user/me");
+  const { data } = useGetUserMe();
 
-        return data;
-      },
-    });
-  };
-
-  const { data } = useGetProfile();
+  const { data: category } = useGetCategory({
+    limit: 5,
+  });
 
   return (
     <nav className="w-full h-[70px] shadow-md flex justify-between items-center px-10 z-20 fixed bg-white">
@@ -148,82 +143,30 @@ export const Navbar = (props) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}>
-                <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
-                  <div className="w-[55%] h-full">
-                    <img
-                      className="w-full h-full object-cover"
-                      src="https://images.unsplash.com/photo-1660206609394-afe2e1a69b6a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="wisata"
-                    />
-                  </div>
-                  <div className="w-[45%] h-full flex flex-col justify-cent pl-[3%]">
-                    <h1 className="text-black font-bold">Paket Event</h1>
-                    <p className="text-black text-xs">
-                      Kumpulan Paket Event Wisata
-                    </p>
-                  </div>
-                </section>
-                <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
-                  <div className="w-[55%] h-full">
-                    <img
-                      className="w-full h-full object-cover"
-                      src="https://images.unsplash.com/photo-1660206609394-afe2e1a69b6a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="wisata"
-                    />
-                  </div>
-                  <div className="w-[45%] h-full flex flex-col justify-cent pl-[3%]">
-                    <h1 className="text-black font-bold">Paket Event</h1>
-                    <p className="text-black text-xs">
-                      Kumpulan Paket Event Wisata
-                    </p>
-                  </div>
-                </section>
-                <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
-                  <div className="w-[55%] h-full">
-                    <img
-                      className="w-full h-full object-cover"
-                      src="https://images.unsplash.com/photo-1660206609394-afe2e1a69b6a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="wisata"
-                    />
-                  </div>
-                  <div className="w-[45%] h-full flex flex-col justify-cent pl-[3%]">
-                    <h1 className="text-black font-bold">Paket Event</h1>
-                    <p className="text-black text-xs">
-                      Kumpulan Paket Event Wisata
-                    </p>
-                  </div>
-                </section>
-                <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
-                  <div className="w-[55%] h-full">
-                    <img
-                      className="w-full h-full object-cover"
-                      src="https://images.unsplash.com/photo-1660206609394-afe2e1a69b6a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="wisata"
-                    />
-                  </div>
-                  <div className="w-[45%] h-full flex flex-col justify-cent pl-[3%]">
-                    <h1 className="text-black font-bold">Paket Event</h1>
-                    <p className="text-black text-xs">
-                      Kumpulan Paket Event Wisata
-                    </p>
-                  </div>
-                </section>
-                <section className="w-full h-[19%] flex p-2 hover:bg-gray-50">
-                  <div className="w-[55%] h-full">
-                    <img
-                      className="w-full h-full object-cover"
-                      src="https://images.unsplash.com/photo-1660206609394-afe2e1a69b6a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="wisata"
-                    />
-                  </div>
-                  <div className="w-[45%] h-full flex flex-col justify-cent pl-[3%]">
-                    <h1 className="text-black font-bold">Paket Event</h1>
-                    <p className="text-black text-xs">
-                      Kumpulan Paket Event Wisata
-                    </p>
-                  </div>
-                </section>
-                <section className="w-full h-[5%] flex justify-end items-center pr-[3%]">
+                {category?.data?.map((category) => (
+                  <section
+                    key={category.id}
+                    onClick={() => navigate(`/category/${category?.name}`)}
+                    className="w-full h-[19%] flex p-2 hover:bg-gray-50">
+                    <div className="w-[55%] h-full">
+                      <img
+                        className="w-full h-full object-cover"
+                        src={
+                          category.image ||
+                          "https://images.unsplash.com/photo-1660206609394-afe2e1a69b6a?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        }
+                        alt="wisata"
+                      />
+                    </div>
+                    <div className="w-[45%] h-full flex flex-col justify-center gap-2 pl-[3%]">
+                      <h1 className="text-black font-bold">{category?.name}</h1>
+                      <p className="text-black text-xs">
+                        {category?.description}
+                      </p>
+                    </div>
+                  </section>
+                ))}
+                <section className="w-full h-[5%] flex justify-end items-center pr-[3%] cursor-default">
                   <Link to={"/category"} className="text-[#2284DF] text-xs">
                     See More
                   </Link>
