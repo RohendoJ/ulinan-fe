@@ -50,7 +50,7 @@ export const router = createBrowserRouter([
   { path: "/cart", element: <Cart /> },
   { path: "/category/:name", element: <CategoryDetail /> },
   { path: "/category/:name/:product_id/", element: <ProductDetail /> },
-  { path: "/category/:name/:product_id/checkout", element: <Checkout /> },
+  { path: "/item/pembayaran", element: <Checkout /> },
   {
     path: "/profile",
     element: (
@@ -220,7 +220,8 @@ export const router = createBrowserRouter([
             </p>
             <Link
               href="/"
-              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
+              className="inline-flex text-[#A6CEF2] bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
+            >
               Kembali
             </Link>
           </div>

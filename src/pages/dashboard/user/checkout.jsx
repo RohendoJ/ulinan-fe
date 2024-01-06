@@ -1,17 +1,45 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "../../../components";
 import { useState } from "react";
 import Accordion from "../../../components/accordion";
+import { useCreateOrder } from "./hooks";
 
 export const Checkout = () => {
   const [selectedOption, setSelectedOption] = useState("");
-
+  const navigate = useNavigate();
   const handleOptionChange = (optionName) => {
     setSelectedOption(optionName);
   };
 
+  const { mutate } = useCreateOrder();
+
+  if (!localStorage.getItem("product_id")) {
+    navigate("/");
+  }
+
   const handlePayment = () => {
-    console.log("Selected Payment Option:", selectedOption);
+    mutate(
+      {
+        product_id: Number(localStorage.getItem("product_id")),
+        quantity: Number(localStorage.getItem("product_quantity")),
+        payment_method: selectedOption,
+        arrival_date: localStorage.getItem("product_date"),
+      },
+      {
+        onSuccess: (data) => {
+          localStorage.setItem("va", data.data.va_numbers[0].va_number);
+          localStorage.setItem("expired", data.data.expiry_time);
+          localStorage.setItem("payment_method", data.data.va_numbers[0].bank);
+          localStorage.setItem("order_id", data.data.order_id);
+          localStorage.removeItem("product_name");
+          localStorage.removeItem("product_quantity");
+          localStorage.removeItem("product_id");
+          localStorage.removeItem("product_price");
+          localStorage.removeItem("product_date");
+          navigate("/payment");
+        },
+      }
+    );
   };
 
   const paymentOptions = [
@@ -74,20 +102,6 @@ export const Checkout = () => {
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/1280px-BANK_BRI_logo.svg.png",
       title: "BRI",
     },
-    {
-      id: 4,
-      name: "btn",
-      logoUrl:
-        "https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/ayobatang/images/post/articles/2020/01/15/467/bank-tabungan-negara-btn.jpg",
-      title: "BTN",
-    },
-    {
-      id: 5,
-      name: "mandiri",
-      logoUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png",
-      title: "Mandiri",
-    },
   ];
 
   return (
@@ -110,10 +124,10 @@ export const Checkout = () => {
           <h3>Total</h3>
         </div>
         <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
-          <h3>: Darajat Pas</h3>
-          <h3>: Rp50.000</h3>
-          <h3>: 1</h3>
-          <h3>: Rp50.000</h3>
+          <h3>: {localStorage.getItem("product_name")}</h3>
+          <h3>: Rp {localStorage.getItem("product_price")}</h3>
+          <h3>: {localStorage.getItem("product_quantity")}</h3>
+          <h3>: Rp {localStorage.getItem("product_total_price")}</h3>
         </div>
       </section>
 

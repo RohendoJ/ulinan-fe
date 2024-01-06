@@ -67,7 +67,8 @@ export const SignIn = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-white w-[70%] md:w-[50%] lg:w-[40%] xl:w-[60%] 2xl:w-[55%] h-[60%] xl:h-[90%] rounded-xl flex items-center flex-col">
+      className="bg-white w-[70%] md:w-[50%] lg:w-[40%] xl:w-[60%] 2xl:w-[55%] h-[60%] xl:h-[90%] rounded-xl flex items-center flex-col"
+    >
       <section className="w-full grid place-items-center h-[30%]">
         <h1 className="font-bold text-[1.5rem]">Masuk Akun</h1>
       </section>
@@ -95,7 +96,8 @@ export const SignIn = () => {
             <button
               type="button"
               onClick={togglePassword}
-              className="absolute inset-y-0 right-1">
+              className="absolute inset-y-0 right-1"
+            >
               {isShowPassword ? (
                 <FaRegEye className="text-[#807F7F]" />
               ) : (

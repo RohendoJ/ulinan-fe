@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Navbar } from "../../../components";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { LuClock7 } from "react-icons/lu";
@@ -26,6 +26,8 @@ export const ProductDetail = () => {
   const handleThumbnailClick = (url) => {
     setImage(url);
   };
+
+  const navigate = useNavigate();
 
   const { mutate } = useAddToCart();
   const handleInsertCart = () => {
@@ -63,6 +65,16 @@ export const ProductDetail = () => {
       setImage(product?.image[0]?.image_url);
     }
   }, [product?.image]);
+
+  const handleBuy = () => {
+    localStorage.setItem("product_id", product.id);
+    localStorage.setItem("product_name", product.name);
+    localStorage.setItem("product_date", date);
+    localStorage.setItem("product_price", product.price);
+    localStorage.setItem("product_quantity", Number(count));
+    localStorage.setItem("product_total_price", count * product.price);
+    navigate("/item/pembayaran");
+  };
 
   return (
     <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">
@@ -145,13 +157,15 @@ export const ProductDetail = () => {
             <div className="w-[40%] flex justify-between">
               <button
                 onClick={() => setCount(count <= 1 ? 1 : count - 1)}
-                className="rounded-full border border-black bg-white w-8">
+                className="rounded-full border border-black bg-white w-8"
+              >
                 -
               </button>
               <h3>{count}</h3>
               <button
                 onClick={() => setCount(count + 1)}
-                className="rounded-full border border-black bg-white w-8">
+                className="rounded-full border border-black bg-white w-8"
+              >
                 +
               </button>
             </div>
@@ -163,14 +177,18 @@ export const ProductDetail = () => {
             </h3>
           </div>
           <div className="flex justify-between w-full px-[10%] font-bold text-xl">
-            <button className="w-full bg-[#2284DF] text-white rounded-md py-1">
+            <button
+              onClick={handleBuy}
+              className="w-full bg-[#2284DF] text-white rounded-md py-1"
+            >
               Beli
             </button>
           </div>
           <div className="flex justify-between w-full px-[10%] font-bold text-xl">
             <button
               onClick={handleInsertCart}
-              className="w-full text-[#2284DF] border border-[#2284DF] bg-white rounded-md py-1">
+              className="w-full text-[#2284DF] border border-[#2284DF] bg-white rounded-md py-1"
+            >
               Add To Cart
             </button>
           </div>

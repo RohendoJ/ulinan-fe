@@ -19,3 +19,8 @@ export const getProductRecommendation = async () => {
   const { data } = await api.get("/api/product/random");
   return data;
 };
+
+export const createOrder = async (payload) => {
+  const { data } = await api.post("/api/order", payload);
+  return data;
+};

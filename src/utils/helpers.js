@@ -23,3 +23,28 @@ export const formatDate = (inputDate) => {
 
   return formattedDate;
 };
+
+export const formatTime = (dateString) => {
+  const waktuObjek = new Date(dateString);
+
+  const months = {
+    January: "Januari",
+    February: "Februari",
+    March: "Maret",
+    April: "April",
+    May: "Mei",
+    June: "Juni",
+    July: "Juli",
+    August: "Agustus",
+    September: "September",
+    October: "Oktober",
+    November: "November",
+    December: "Desember",
+  };
+
+  const tanggal = waktuObjek.getDate();
+  const namaBulan = Object.keys(months)[waktuObjek.getMonth()];
+  const tahun = waktuObjek.getFullYear();
+
+  return `${tanggal} ${namaBulan} ${tahun}`;
+};
