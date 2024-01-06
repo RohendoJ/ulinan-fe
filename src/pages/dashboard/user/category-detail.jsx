@@ -1,8 +1,20 @@
 import { Link, useParams } from "react-router-dom";
 import { CardUser, FooterUser, Navbar } from "../../../components";
+import { useGetCategory, useGetProducts } from "../admin";
+import { useMemo } from "react";
 
 export const CategoryDetail = () => {
   const param = useParams();
+
+  const { data } = useGetCategory();
+
+  const category = useMemo(() => {
+    return data?.data?.find((item) => item?.name === param.name);
+  }, [data?.data, param.name]);
+
+  const { data: product, isLoading } = useGetProducts({
+    category_id: Number(category?.id),
+  });
 
   return (
     <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">
@@ -25,16 +37,20 @@ export const CategoryDetail = () => {
           className="bg-[#F5F6F7] h-[75%] pl-5 rounded-md w-[50%] md:w-[40%] lg:w-[30%] border focus:outline-slate-400"
         />
       </section>
-
-      <section className="max-w-full h-auto flex px-[8%] gap-7 flex-wrap mt-5">
-        <CardUser />
-        <CardUser />
-        <CardUser />
-        <CardUser />
-        <CardUser />
-        <CardUser />
-        <CardUser />
-      </section>
+      {isLoading ? (
+        <div className="max-w-full h-[20rem] flex px-[8%] gap-7 flex-wrap mt-5 bg-[#F5F6F7] animate-pulse duration-150"></div>
+      ) : (
+        <section className="max-w-full h-auto flex px-[8%] gap-7 flex-wrap mt-5">
+          {product?.data?.map((item) => (
+            <CardUser
+              key={item?.id}
+              image_url={item?.image}
+              link={`/category/${item?.category}/${item?.id}`}
+              {...item}
+            />
+          ))}
+        </section>
+      )}
 
       <section className="w-full h-[300px] bg-[#134F86] mt-10 flex flex-col justify-evenly items-center">
         <FooterUser />

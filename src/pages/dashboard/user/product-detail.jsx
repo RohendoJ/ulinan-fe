@@ -3,7 +3,7 @@ import { Navbar } from "../../../components";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { LuClock7 } from "react-icons/lu";
 import { FaStar } from "react-icons/fa";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetProductById } from "../admin";
 import { useAddToCart } from "./hooks";
 import Swal from "sweetalert2";
@@ -20,9 +20,8 @@ export const ProductDetail = () => {
   const product = useMemo(() => {
     return data?.data;
   }, [data?.data]);
-  console.log(product);
 
-  const [image, setImage] = useState(product?.image[0]?.image_url);
+  const [image, setImage] = useState("");
 
   const handleThumbnailClick = (url) => {
     setImage(url);
@@ -58,6 +57,12 @@ export const ProductDetail = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (product?.image[0]?.image_url) {
+      setImage(product?.image[0]?.image_url);
+    }
+  }, [product?.image]);
 
   return (
     <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">

@@ -45,9 +45,7 @@ export const CategoryHomepage = (props) => {
       <section className="w-full px-[8%] mt-10 flex justify-between items-center">
         <h1 className="font-bold text-xl">{props.heading}</h1>
         {props.seeAll && filteredProducts?.length > 0 && (
-          <Link
-            to={`/category/${props.heading?.toLowerCase()}`}
-            className="text-[#2284DF]">
+          <Link to={`/category/${props.heading}`} className="text-[#2284DF]">
             See All
           </Link>
         )}

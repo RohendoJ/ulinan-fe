@@ -2,8 +2,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "../../../components";
 import { MdOutlineContentCopy } from "react-icons/md";
 import Swal from "sweetalert2";
+import { useGetCart } from "./hooks";
+import { useMemo } from "react";
 
 export const PaymentUser = () => {
+  const { data } = useGetCart();
+
+  const cart = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
   const navigate = useNavigate();
 
   return (
@@ -43,15 +51,13 @@ export const PaymentUser = () => {
             onClick={() => {
               Swal.fire("Berhasil salin kode VA");
             }}
-            className="bg-[#807F7F] w-[15%] h-full text-white text-lg grid place-items-center hover:cursor-pointer hover:bg-gray-500"
-          >
+            className="bg-[#807F7F] w-[15%] h-full text-white text-lg grid place-items-center hover:cursor-pointer hover:bg-gray-500">
             <MdOutlineContentCopy />
           </div>
         </div>
         <button
           onClick={() => navigate("/history")}
-          className="border border-[#2284DF] font-bold text-[#2284DF] rounded-lg px-2 py-1"
-        >
+          className="border border-[#2284DF] font-bold text-[#2284DF] rounded-lg px-2 py-1">
           Cek Status Pembayaran
         </button>
       </section>

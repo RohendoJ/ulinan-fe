@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "../../../components/navbar";
 // import { FooterUser } from "../../../components";
 import { useGetCart } from "./hooks";
@@ -11,8 +11,7 @@ export const Cart = () => {
     return data?.data;
   }, [data?.data]);
 
-  console.log(cart);
-
+  const navigate = useNavigate();
   return (
     <main className="w-full h-auto xl:h-screen flex flex-col overflow-x-hidden">
       <Navbar dashboard />
@@ -79,7 +78,10 @@ export const Cart = () => {
             <p className="text-[#807F7F] text-[1.1rem] text-center w-[70%]">
               Selesaikan Pembayaran untuk mendapatkan tiket
             </p>
-            <button className="w-[80%] h-[13%] bg-[#2284DF] hover:bg-blue-600 text-white font-bold grid place-items-center rounded-lg mb-5">
+            <button
+              disabled={!cart?.cart_items}
+              onClick={() => navigate("/item/pembayaran")}
+              className="w-[80%] h-[13%] bg-[#2284DF] hover:bg-blue-600 text-white font-bold grid place-items-center rounded-lg mb-5">
               Checkout
             </button>
           </div>
