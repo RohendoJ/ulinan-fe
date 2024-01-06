@@ -16,7 +16,7 @@ export const AddGallery = () => {
 
   const list = [
     {
-      name: "Gallery",
+      name: "Galeri",
     },
   ];
 

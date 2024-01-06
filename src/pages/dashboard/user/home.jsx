@@ -4,9 +4,14 @@ import { Slideshow } from "./slideshow";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { CategoryHomepage } from "./category-homepage";
 import { useGetCategory } from "../admin/category/hooks";
-import { Fragment, useMemo } from "react";
+import { Fragment, useMemo, useState } from "react";
+import { CategoryHomepageRecommendation } from "./category-rekomendasi";
+import { useSearchProduct } from "../../../utils/hooks";
+import { SearchProduct } from "./search-product";
 
 export const Home = () => {
+  const { getSearch, setSearch } = useSearchProduct();
+
   const { data, isLoading } = useGetCategory();
 
   const category = useMemo(() => {
@@ -15,7 +20,7 @@ export const Home = () => {
 
   return (
     <main className="w-full h-auto flex flex-col items-center overflow-x-hidden">
-      <Navbar />
+      <Navbar onChange={(e) => setSearch(e.target.value)} />
       <div className="flex mt-24 h-[40px] xl:hidden w-full justify-center items-center">
         <input
           type="text"
@@ -24,7 +29,10 @@ export const Home = () => {
         />
       </div>
       <Slideshow />
-      <CategoryHomepage heading={"Rekomendasi"} />
+
+      {getSearch && <SearchProduct heading={"Hasil pencarian"} />}
+
+      <CategoryHomepageRecommendation heading={"Rekomendasi"} />
 
       {isLoading ? (
         <div className="w-[85%] h-[12rem] px-[8%] mt-10 flex bg-[#F5F6F7] justify-center items-center animate-pulse duration-150"></div>

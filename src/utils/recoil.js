@@ -10,3 +10,8 @@ export const pathnameAdmin = atom({
   key: "pathname",
   default: path,
 });
+
+export const searchProduct = atom({
+  key: "searchProduct",
+  default: "",
+});

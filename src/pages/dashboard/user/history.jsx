@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { Navbar } from "../../../components/navbar";
 import { FooterUser } from "../../../components";
+import { useGetHistoryTransaction } from "./hooks";
 
 export const History = () => {
+  const { data } = useGetHistoryTransaction();
+  console.log(data);
+
   return (
     <main className="w-full xl:h-auto flex flex-col overflow-x-hidden">
       <Navbar dashboard />

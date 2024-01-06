@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { pathnameAdmin, sidebarMobile } from "./recoil";
+import { pathnameAdmin, searchProduct, sidebarMobile } from "./recoil";
 
 export const useSidebarMobile = () => {
   const [get, set] = useRecoilState(sidebarMobile);
@@ -14,5 +14,13 @@ export const usePathnameAdmin = () => {
   return {
     setPathname: (val) => set(val),
     getPathname: get,
+  };
+};
+
+export const useSearchProduct = () => {
+  const [get, set] = useRecoilState(searchProduct);
+  return {
+    setSearch: (val) => set(val),
+    getSearch: get,
   };
 };

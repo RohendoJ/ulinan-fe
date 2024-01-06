@@ -16,7 +16,7 @@ export const EditGallery = () => {
   const { id } = useParams();
   const list = [
     {
-      name: "Gallery",
+      name: "Galeri",
     },
   ];
 
@@ -107,7 +107,7 @@ export const EditGallery = () => {
 
           <div className="flex items-center justify-between">
             <ButtonLinkAdmin
-              href="/dashboard-admin/gallery"
+              href="/dashboard-admin/galeri"
               backgroundColor="bg-[#B3B2B2]"
               textSize="text-lg">
               Batal

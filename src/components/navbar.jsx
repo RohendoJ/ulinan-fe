@@ -3,8 +3,6 @@ import { LuX, LuMenu, LuChevronDown, LuChevronUp } from "react-icons/lu";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { getToken, removeToken } from "../utils/token";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "../services/axios";
 import { FaRegUser } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 import Swal from "sweetalert2";
@@ -115,6 +113,7 @@ export const Navbar = (props) => {
             type="text"
             placeholder="Search"
             className="bg-[#F5F6F7] h-full pl-5 rounded-md w-full border focus:outline-slate-400"
+            onChange={props.onChange}
           />
         </section>
       )}

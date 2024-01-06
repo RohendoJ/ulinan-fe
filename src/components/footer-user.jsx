@@ -12,7 +12,7 @@ export const FooterUser = (props) => {
       {props.dashboard ? (
         <section className="absolute bottom-0 w-full h-[50px] bg-[#134F86] mt-10 flex justify-between px-[10%] items-center">
           <div className="text-white text-[0.6rem] md:text-[0.8rem]">
-            <p>© 2022 Ulinan | Powered by Ulinan</p>
+            <p>© 2024 Ulinan | Powered by Ulinan</p>
           </div>
           <div className="text-white text-[1rem] md:text-[1.2rem] xl:text-[1rem] flex justify-center items-center gap-5">
             <FaFacebookF className="hover:cursor-pointer" />
@@ -57,7 +57,7 @@ export const FooterUser = (props) => {
             </p>
           </div>
           <div className="text-white text-[0.7rem] md:text-[0.8rem]">
-            <p>© 2022 Ulinan | Powered by Ulinan</p>
+            <p>© 2024 Ulinan | Powered by Ulinan</p>
           </div>
         </section>
       )}

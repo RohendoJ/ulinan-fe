@@ -1,10 +1,16 @@
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-export const CardUser = ({ title, price }) => {
+export const CardUser = ({ title, price, link, image_url }) => {
   return (
-    <div className="w-[260px] h-[260px] shadow-md hover:shadow-xl hover:cursor-pointer rounded-md border border-slate-200 mt-3 flex flex-col overflow-hidden">
+    <Link
+      to={link}
+      className="w-[260px] h-[260px] shadow-md hover:shadow-xl hover:cursor-pointer rounded-md border border-slate-200 mt-3 flex flex-col overflow-hidden">
       <img
-        src="https://images.unsplash.com/photo-1503503330041-4cd943d2b61f?q=80&w=1531&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src={
+          image_url ||
+          "https://images.unsplash.com/photo-1503503330041-4cd943d2b61f?q=80&w=1531&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
         alt="card-image"
         className="w-full h-1/2"
       />
@@ -20,6 +26,6 @@ export const CardUser = ({ title, price }) => {
           Rp. {price?.toLocaleString("id-ID")}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
