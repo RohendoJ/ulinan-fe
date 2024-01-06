@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
-export const CardAdmin = ({ name, value, icon, link, onClick }) => {
-  return (
+export const CardAdmin = ({ name, value, icon, link, onClick, isLoading }) => {
+  return isLoading ? (
+    <div className="w-[18rem] xl:w-[409px] h-[130px] bg-[#EBEAEA] animate-pulse flex cursor-wait duration-300 bg-"></div>
+  ) : (
     <Link
       onClick={onClick}
       to={link}

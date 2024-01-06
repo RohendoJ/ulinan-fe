@@ -8,7 +8,7 @@ import { useMemo } from "react";
 export const HomeAdmin = () => {
   const { setPathname } = usePathnameAdmin();
 
-  const { data } = useGetCardDashboard();
+  const { data, isLoading } = useGetCardDashboard();
 
   const cardDashboard = useMemo(() => {
     return data?.data;
@@ -49,6 +49,7 @@ export const HomeAdmin = () => {
             key={index}
             {...card}
             onClick={() => setPathname(card.link)}
+            isLoading={isLoading}
           />
         ))}
       </div>
