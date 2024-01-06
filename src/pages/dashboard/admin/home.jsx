@@ -2,31 +2,40 @@ import { MdAttachMoney, MdCheck, MdShop, MdViewModule } from "react-icons/md";
 import { CardAdmin } from "../../../components";
 import { ContentAdminLayout } from "../../../layouts";
 import { usePathnameAdmin } from "../../../utils/hooks";
+import { useGetCardDashboard } from "./hooks";
+import { useMemo } from "react";
 
 export const HomeAdmin = () => {
   const { setPathname } = usePathnameAdmin();
+
+  const { data } = useGetCardDashboard();
+
+  const cardDashboard = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
   const cardValues = [
     {
       name: "Category",
-      value: 10,
+      value: cardDashboard?.category_count || 0,
       icon: <MdViewModule />,
       link: "/dashboard-admin/category",
     },
     {
       name: "Product",
-      value: 10,
+      value: cardDashboard?.product_count || 0,
       icon: <MdShop />,
       link: "/dashboard-admin/product",
     },
     {
       name: "Transaksi",
-      value: 10,
+      value: cardDashboard?.order_count || 0,
       icon: <MdAttachMoney />,
       link: "/dashboard-admin/transaksi",
     },
     {
       name: "Success",
-      value: 10,
+      value: cardDashboard?.payment_success_count || 0,
       icon: <MdCheck />,
       link: "/dashboard-admin/transaksi",
     },

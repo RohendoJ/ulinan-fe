@@ -1,19 +1,31 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { ButtonLinkAdmin, Select, TextField } from "../../../../components";
+import {
+  ButtonLinkAdmin,
+  Select,
+  Spinner,
+  TextField,
+} from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
+import { useGetTransactionById, useUpdateTransaction } from "./hooks";
+import { useEffect, useMemo, useState } from "react";
 
 export const EditTransaksi = () => {
   const { id } = useParams();
-
-  console.log(id);
+  const [isLoading, setIsLoading] = useState(false);
 
   const list = [
     {
       name: "Transaksi",
     },
   ];
+
+  const { data } = useGetTransactionById(id);
+
+  const transaction = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
 
   const navigate = useNavigate();
 
@@ -23,24 +35,40 @@ export const EditTransaksi = () => {
       transaksi_datetime: "",
       transaksi_username: "",
       transaksi_status: "",
-      transaksi_address: "",
-      transaksi_information: "",
     },
   });
 
-  const { handleSubmit } = form;
+  const { handleSubmit, reset } = form;
+
+  const { mutate } = useUpdateTransaction(id);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log(data);
-
-      Swal.fire({
-        title: "Sukses Menyimpan Transaksi",
-        icon: "success",
-        showConfirmButton: false,
-      });
-
-      navigate("/dashboard-admin/transaksi");
+      setIsLoading(true);
+      mutate(
+        {
+          payment_status: data?.transaksi_status,
+        },
+        {
+          onSuccess: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Sukses Menyimpan Transaksi",
+              icon: "success",
+              showConfirmButton: false,
+            });
+            navigate("/dashboard-admin/transaksi");
+          },
+          onError: () => {
+            setIsLoading(false);
+            Swal.fire({
+              title: "Gagal Menyimpan Transaksi",
+              icon: "error",
+              showConfirmButton: false,
+            });
+          },
+        }
+      );
     } catch (error) {
       Promise.reject(error);
     }
@@ -51,6 +79,14 @@ export const EditTransaksi = () => {
     { value: "Success", name: "Success" },
     { value: "Failed", name: "Failed" },
   ];
+
+  useEffect(() => {
+    reset({
+      transaksi_datetime: transaction?.created_at,
+      transaksi_username: transaction?.username,
+      transaksi_status: transaction?.payment_status,
+    });
+  }, [reset, transaction]);
 
   return (
     <ContentAdminLayout
@@ -66,11 +102,13 @@ export const EditTransaksi = () => {
             name="transaksi_datetime"
             label="Date Time"
             placeholder="Masukan waktu transaksi"
+            disabled
           />
           <TextField
             name="transaksi_username"
             label="Username"
             placeholder="Masukan username transaksi"
+            disabled
           />
           <Select
             name="transaksi_status"
@@ -87,30 +125,34 @@ export const EditTransaksi = () => {
               <table>
                 <thead className="border-b border-black text-xl">
                   <tr>
-                    <th className="p-2 text-left">No</th>
-                    <th className="w-[30%]">Nama</th>
-                    <th className="w-[25%]">Jumlah</th>
-                    <th className="w-[20%]">Price</th>
-                    <th className="w-[13%]">Total</th>
+                    <th className="w-[5%] py-2 px-4 text-left">No</th>
+                    <th className="w-[30%] px-6">Nama</th>
+                    <th className="w-[25%] px-6">Jumlah</th>
+                    <th className="w-[20%] px-14 md:px-12">Price</th>
+                    <th className="w-[13%] px-14 md:px-12">Total</th>
                   </tr>
                 </thead>
                 <tbody className="text-center font-bold">
                   <tr>
-                    <td className="py-3 text-left pl-4">1</td>
+                    <td className="py-3 text-left pl-6">1</td>
                     <td>Darajat Pass</td>
-                    <td>1</td>
-                    <td>Rp. 100.000</td>
-                    <td>Rp. 100.000</td>
+                    <td>{transaction?.products.length}</td>
+                    <td>
+                      Rp. {transaction?.grand_total.toLocaleString("id-ID")}
+                    </td>
+                    <td>
+                      Rp. {transaction?.grand_total.toLocaleString("id-ID")}
+                    </td>
                   </tr>
                   <tr>
                     <td className="py-6 text-left pl-4"></td>
                     <td></td>
                     <td></td>
-                    <td className="border-t-2 border-black text-xl">
+                    <td className="border-t-2 border-black text-lg xl:text-xl">
                       Total Pembayaran
                     </td>
-                    <td className="border-t-2 border-black text-xl">
-                      Rp. 100.000
+                    <td className="border-t-2 border-black text-lg xl:text-xl">
+                      Rp. {transaction?.grand_total.toLocaleString("id-ID")}
                     </td>
                   </tr>
                 </tbody>
@@ -127,8 +169,9 @@ export const EditTransaksi = () => {
             </ButtonLinkAdmin>
             <button
               type="submit"
-              className="flex items-center justify-center border-2 h-11 px-6 rounded-xl text-lg bg-[#2284DF] text-white">
-              Simpan
+              disabled={isLoading}
+              className="flex items-center justify-center border-2 h-11 px-6 disabled:w-[8rem] disabled:cursor-wait rounded-xl text-lg bg-[#2284DF] text-white">
+              {isLoading ? <Spinner width="w-5" height="h-5" /> : "Simpan"}
             </button>
           </div>
         </form>

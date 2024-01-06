@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
   ButtonPaginate,
   LimitSelect,
@@ -5,6 +6,8 @@ import {
   TableTransaksiAdmin,
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
+import { useDeleteTransaction, useGetTransactions } from "./hooks";
+import Swal from "sweetalert2";
 
 export const TransaksiAdmin = () => {
   const list = [
@@ -12,40 +15,32 @@ export const TransaksiAdmin = () => {
       name: "Transaksi",
     },
   ];
-  const dataTable = [
-    {
-      id: 1,
-      date_time: "Nov 26, 2023 12:07 am",
-      username: "endemic_mermaid_37",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      date_time: "Nov 26, 2023 12:07 am",
-      username: "endemic_mermaid_37",
-      status: "Failed",
-    },
-    {
-      id: 3,
-      date_time: "Nov 26, 2023 12:07 am",
-      username: "endemic_mermaid_37",
-      status: "Success",
-    },
-    {
-      id: 4,
-      date_time: "Nov 26, 2023 12:07 am",
-      username: "endemic_mermaid_37",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      date_time: "Nov 26, 2023 12:07 am",
-      username: "endemic_mermaid_37",
-      status: "Success",
-    },
-  ];
+
+  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState(5);
+
+  const { data, isLoading, refetch } = useGetTransactions({
+    limit: limit,
+    page: page,
+    search: searchQuery,
+  });
+
+  const dataTable = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
+  const meta = useMemo(() => {
+    return data?.meta;
+  }, [data?.meta]);
+
+  const { mutate } = useDeleteTransaction();
 
   const limitData = [
+    {
+      value: 5,
+      name: "5",
+    },
     {
       value: 10,
       name: "10",
@@ -60,19 +55,57 @@ export const TransaksiAdmin = () => {
     },
   ];
 
+  const onNext = () => {
+    if (meta?.next_page) {
+      setPage(meta?.next_page);
+    }
+  };
+
+  const onPrevious = () => {
+    if (meta?.prev_page) {
+      setPage(meta?.prev_page);
+    }
+  };
+
+  const search = (e) => {
+    setSearchQuery(e.target.value);
+    setPage(1);
+  };
+
   return (
     <ContentAdminLayout title="Transaksi" list={list}>
       <div className="flex items-center mt-5 justify-between">
-        <LimitSelect options={limitData} />
-        <Search />
+        <LimitSelect
+          options={limitData}
+          onChange={(e) => setLimit(e.target.value)}
+        />
+        <Search onChange={search} />
       </div>
-      <TableTransaksiAdmin data={dataTable} />
+      <TableTransaksiAdmin
+        data={dataTable}
+        isLoading={isLoading}
+        onDelete={(id) => {
+          mutate(id, {
+            onSuccess: () => {
+              refetch();
+              Swal.fire({
+                icon: "success",
+                title: "Delete Success",
+                showConfirmButton: false,
+              });
+            },
+          });
+        }}
+      />
       <div className="w-full flex justify-end">
         <ButtonPaginate
-          next="https://google.com"
-          previous="https://google.com"
-          page={1}
-          total={6}
+          onFirst={() => setPage(1)}
+          onLast={() => setPage(meta?.total_page)}
+          onNext={onNext}
+          onPrevious={onPrevious}
+          onClickPage={(index) => setPage(index)}
+          page={meta?.current_page}
+          total={meta?.total_page}
         />
       </div>
     </ContentAdminLayout>

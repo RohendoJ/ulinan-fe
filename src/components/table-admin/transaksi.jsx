@@ -4,11 +4,16 @@ import { Link } from "react-router-dom";
 import { DataNotFound } from "./error";
 import Swal from "sweetalert2";
 
-export const TableTransaksiAdmin = ({ data }) => {
-  if (!data || data?.length === 0) {
+export const TableTransaksiAdmin = ({ data, isLoading, onDelete }) => {
+  if ((!data && !isLoading) || (data?.length === 0 && !isLoading)) {
     return <DataNotFound />;
   }
 
+  if (isLoading) {
+    return (
+      <div className="container w-full h-[20rem] mx-auto my-6 bg-slate-200 animate-pulse"></div>
+    );
+  }
   const conditionalStatus = (status) => {
     return (
       <td
@@ -55,12 +60,12 @@ export const TableTransaksiAdmin = ({ data }) => {
                 {index + 1}
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
-                {data?.date_time}
+                {data?.created_at}
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 text-center border-black">
                 {data?.username}
               </td>
-              {conditionalStatus(data?.status)}
+              {conditionalStatus(data?.payment_status)}
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
                 <div className="w-full flex items-center justify-center gap-5">
                   <Link
@@ -82,11 +87,7 @@ export const TableTransaksiAdmin = ({ data }) => {
                         iconColor: "#F2994A",
                       }).then((result) => {
                         if (result.isDenied) {
-                          console.log("Hapus");
-                        }
-
-                        if (result.isConfirmed) {
-                          console.log("Batal");
+                          onDelete(data?.id);
                         }
                       });
                     }}

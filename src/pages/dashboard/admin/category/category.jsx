@@ -8,6 +8,7 @@ import {
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
 import { useDeleteCategory, useGetCategory } from "./hooks";
+import Swal from "sweetalert2";
 
 export const CategoryAdmin = () => {
   const list = [
@@ -89,7 +90,14 @@ export const CategoryAdmin = () => {
         isLoading={isLoading}
         onDelete={(id) => {
           mutate(id, {
-            onSuccess: () => refetch(),
+            onSuccess: () => {
+              refetch();
+              Swal.fire({
+                icon: "success",
+                title: "Delete Success",
+                showConfirmButton: false,
+              });
+            },
           });
         }}
       />

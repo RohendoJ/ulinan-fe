@@ -8,6 +8,7 @@ import {
 } from "../../../../components";
 import { ContentAdminLayout } from "../../../../layouts";
 import { useDeleteProduct, useGetProducts } from "./hooks";
+import Swal from "sweetalert2";
 
 export const ProductAdmin = () => {
   const list = [
@@ -88,7 +89,14 @@ export const ProductAdmin = () => {
         isLoading={isLoading}
         onDelete={(id) => {
           mutate(id, {
-            onSuccess: () => refetch(),
+            onSuccess: () => {
+              refetch();
+              Swal.fire({
+                icon: "success",
+                title: "Delete Success",
+                showConfirmButton: false,
+              });
+            },
           });
         }}
       />
