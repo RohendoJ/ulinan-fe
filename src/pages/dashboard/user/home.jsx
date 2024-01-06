@@ -4,7 +4,7 @@ import { Slideshow } from "./slideshow";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { CategoryHomepage } from "./category-homepage";
 import { useGetCategory } from "../admin/category/hooks";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { CategoryHomepageRecommendation } from "./category-rekomendasi";
 import { useSearchProduct } from "../../../utils/hooks";
 import { SearchProduct } from "./search-product";
@@ -17,6 +17,10 @@ export const Home = () => {
   const category = useMemo(() => {
     return data?.data;
   }, [data?.data]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [getSearch]);
 
   return (
     <main className="w-full h-auto flex flex-col items-center overflow-x-hidden">

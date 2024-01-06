@@ -5,7 +5,7 @@ export const CardUser = ({ title, price, link, image_url }) => {
   return (
     <Link
       to={link}
-      className="w-[260px] h-[260px] shadow-md hover:shadow-xl hover:cursor-pointer rounded-md border border-slate-200 mt-3 flex flex-col overflow-hidden">
+      className="w-[280px] h-[300px] shadow-md hover:shadow-xl hover:cursor-pointer rounded-md border border-slate-200 mt-3 flex flex-col overflow-hidden">
       <img
         src={
           image_url ||

@@ -22,7 +22,7 @@ export const SearchProduct = (props) => {
       return (
         <CardUser
           key={product?.id}
-          image_url={product?.image}
+          image_url={product?.image?.[0]?.image_url}
           link={`/category/${product?.category}/${product?.id}`}
           title={product?.name}
           price={product?.price}

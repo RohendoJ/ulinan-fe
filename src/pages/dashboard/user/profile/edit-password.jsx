@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { FooterUser, Navbar } from "../../../../components";
+import { FooterUser, Navbar, Spinner } from "../../../../components";
 import { useState } from "react";
 import { useUpdatePassword } from "./hooks";
 import Swal from "sweetalert2";
 
 export const EditProfilePassword = () => {
   const [updatePassword, setUpdatePassword] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -46,8 +47,10 @@ export const EditProfilePassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     mutate(updatePassword, {
       onSuccess: () => {
+        setIsLoading(false);
         Swal.fire({
           icon: "success",
           title: "Password updated",
@@ -56,6 +59,7 @@ export const EditProfilePassword = () => {
         navigate("/profile");
       },
       onError: (err) => {
+        setIsLoading(false);
         Swal.fire({
           icon: "error",
           title: "Update Failed",
@@ -101,8 +105,11 @@ export const EditProfilePassword = () => {
         </div>
 
         <div className="w-full lg:w-[50%] lg:h-full flex flex-col items-center justify-center md:justify-start gap-3 md:pr-28 pt-5">
-          <button className="rounded-md border w-[65%] text-white bg-[#2284DF] font-semibold py-2 px-4 text-lg">
-            Simpan
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="flex items-center justify-center rounded-md border w-[65%] h-[3rem] border-[#2284DF] text-white bg-[#2284DF] font-semibold py-2 px-4 text-lg">
+            {isLoading ? <Spinner width="w-5" height="h-5" /> : "Simpan"}
           </button>
           <button
             onClick={() => navigate("/profile")}

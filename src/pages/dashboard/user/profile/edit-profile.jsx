@@ -95,6 +95,7 @@ export const EditProfilePage = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setUpdateData({
       ...updateData,
     });
@@ -138,8 +139,7 @@ export const EditProfilePage = () => {
 
       <form
         onSubmit={onSubmit}
-        className="w-full h-full flex flex-col lg:flex-row gap-16 lg:gap-0 mb-[50vh] lg:mb-[35vh] xl:mb-[40vh]"
-      >
+        className="w-full h-full flex flex-col lg:flex-row gap-16 lg:gap-0 mb-[50vh] lg:mb-[35vh] xl:mb-[40vh]">
         <div className="flex flex-col w-full lg:w-[50%] h-full px-[8%] gap-2">
           <h1 className="text-black font-bold text-[2rem] mt-5">
             Edit Profile
@@ -160,8 +160,7 @@ export const EditProfilePage = () => {
             />
             <label
               htmlFor="avatar"
-              className="flex gap-10 w-fit relative rounded-full cursor-pointer"
-            >
+              className="flex gap-10 w-fit relative rounded-full cursor-pointer">
               <img
                 src={avatar?.url || user?.avatar}
                 alt="profile"
@@ -194,8 +193,7 @@ export const EditProfilePage = () => {
                     ...updateData,
                     gender_id: Number(e.target.value),
                   })
-                }
-              >
+                }>
                 <option value="1">Pria</option>
                 <option value="2">Wanita</option>
               </select>
@@ -207,14 +205,12 @@ export const EditProfilePage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="flex items-center justify-center rounded-md border w-[60%] h-[3rem] text-white bg-[#2284DF] font-semibold py-2 px-4 text-lg"
-          >
+            className="flex items-center justify-center rounded-md border w-[60%] h-[3rem] text-white bg-[#2284DF] font-semibold py-2 px-4 text-lg">
             {isLoading ? <Spinner width="w-5" height="h-5" /> : "Simpan"}
           </button>
           <button
             onClick={() => navigate("/profile")}
-            className="rounded-md border w-[60%] border-[#2284DF] text-[#2284DF] font-semibold py-2 px-4 text-lg"
-          >
+            className="rounded-md border w-[60%] border-[#2284DF] text-[#2284DF] font-semibold py-2 px-4 text-lg">
             Batal
           </button>
         </div>

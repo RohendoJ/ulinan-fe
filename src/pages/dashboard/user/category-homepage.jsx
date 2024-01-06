@@ -24,7 +24,7 @@ export const CategoryHomepage = (props) => {
       return (
         <CardUser
           key={product?.id}
-          image_url={product?.image}
+          image_url={product?.image[0]?.image_url}
           link={`/category/${product?.category}/${product?.id}`}
           title={product?.name}
           price={product?.price}
@@ -51,7 +51,7 @@ export const CategoryHomepage = (props) => {
         )}
       </section>
       <section className="w-full h-auto flex justify-center items-center">
-        <div className="w-[85%] h-auto pl-[0.5%]">
+        <div className="w-[85%] h-fit pl-[0.5%]">
           {filteredProducts?.length === 0 ? (
             <div className="flex flex-col gap-2 items-center justify-center h-[10rem] mt-3 font-medium">
               <FiAlertTriangle className="text-5xl" />

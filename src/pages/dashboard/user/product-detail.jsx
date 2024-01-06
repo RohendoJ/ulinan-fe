@@ -126,7 +126,7 @@ export const ProductDetail = () => {
           </section>
 
           <section className="flex items-center font-bold gap-2">
-            <h3 className="text-[#F46264]">Air Panas, Gunung, Kolam</h3>
+            <h3 className="text-[#F46264]">{product?.category}</h3>
           </section>
 
           <section className="flex items-center font-bold gap-2">
