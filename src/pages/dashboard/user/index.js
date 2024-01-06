@@ -7,3 +7,4 @@ export * from "./category-homepage";
 export * from "./history";
 export * from "./cart";
 export * from "./profile";
+export * from "./payment";
