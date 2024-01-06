@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   addToCart,
   createOrder,
+  createOrderCart,
   getCart,
   getHistoryTransaction,
   getProductRecommendation,
@@ -41,5 +42,12 @@ export const useCreateOrder = () => {
   return useMutation({
     mutationKey: ["create-order-single-product"],
     mutationFn: async (payload) => await createOrder(payload),
+  });
+};
+
+export const useCreateOrderCart = () => {
+  return useMutation({
+    mutationKey: ["create-order-carts"],
+    mutationFn: async (payload) => await createOrderCart(payload),
   });
 };

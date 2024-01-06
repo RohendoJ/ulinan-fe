@@ -1,5 +1,5 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { Navbar } from "../../../components";
+import { Navbar, Spinner } from "../../../components";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { LuClock7 } from "react-icons/lu";
 import { FaStar } from "react-icons/fa";
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 
 export const ProductDetail = () => {
   const [count, setCount] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [date, setDate] = useState("");
 
@@ -32,6 +33,7 @@ export const ProductDetail = () => {
   const { mutate } = useAddToCart();
   const handleInsertCart = () => {
     try {
+      setIsLoading(true);
       mutate(
         {
           product_id: Number(product?.id),
@@ -40,17 +42,18 @@ export const ProductDetail = () => {
         },
         {
           onSuccess: () => {
+            setIsLoading(false);
             Swal.fire({
               icon: "success",
               title: "Success",
               text: "Product added to cart",
             });
           },
-          onError: (error) => {
+          onError: () => {
+            setIsLoading(false);
             Swal.fire({
               icon: "error",
-              title: "Oops...",
-              text: error?.response?.data?.message,
+              title: "Terjadi Kesalahan",
             });
           },
         }
@@ -157,15 +160,13 @@ export const ProductDetail = () => {
             <div className="w-[40%] flex justify-between">
               <button
                 onClick={() => setCount(count <= 1 ? 1 : count - 1)}
-                className="rounded-full border border-black bg-white w-8"
-              >
+                className="rounded-full border border-black bg-white w-8">
                 -
               </button>
               <h3>{count}</h3>
               <button
                 onClick={() => setCount(count + 1)}
-                className="rounded-full border border-black bg-white w-8"
-              >
+                className="rounded-full border border-black bg-white w-8">
                 +
               </button>
             </div>
@@ -179,17 +180,16 @@ export const ProductDetail = () => {
           <div className="flex justify-between w-full px-[10%] font-bold text-xl">
             <button
               onClick={handleBuy}
-              className="w-full bg-[#2284DF] text-white rounded-md py-1"
-            >
+              className="w-full bg-[#2284DF] text-white rounded-md py-1">
               Beli
             </button>
           </div>
           <div className="flex justify-between w-full px-[10%] font-bold text-xl">
             <button
               onClick={handleInsertCart}
-              className="w-full text-[#2284DF] border border-[#2284DF] bg-white rounded-md py-1"
-            >
-              Add To Cart
+              disabled={count <= 0 || isLoading}
+              className="w-full flex items-center justify-center text-[#2284DF] border border-[#2284DF] bg-white rounded-md py-1 disabled:bg-opacity-70 disabled:cursor-not-allowed">
+              {isLoading ? <Spinner width="w-6" height="h-6" /> : "Add To Cart"}
             </button>
           </div>
         </div>

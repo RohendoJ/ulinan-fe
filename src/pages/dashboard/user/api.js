@@ -24,3 +24,8 @@ export const createOrder = async (payload) => {
   const { data } = await api.post("/api/order", payload);
   return data;
 };
+
+export const createOrderCart = async (payload) => {
+  const { data } = await api.post("/api/order/carts", payload);
+  return data;
+};

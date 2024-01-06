@@ -1,46 +1,133 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Navbar } from "../../../components";
-import { useState } from "react";
+import { Navbar, Spinner } from "../../../components";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import Accordion from "../../../components/accordion";
-import { useCreateOrder } from "./hooks";
+import { useCreateOrder, useCreateOrderCart, useGetCart } from "./hooks";
+import { useGetUserMe } from "../../../components/navbar-admin/hooks";
+import Swal from "sweetalert2";
 
 export const Checkout = () => {
   const [selectedOption, setSelectedOption] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { data, isError } = useGetCart();
+  const { data: user } = useGetUserMe();
+
+  const cart = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
+
   const handleOptionChange = (optionName) => {
     setSelectedOption(optionName);
   };
 
   const { mutate } = useCreateOrder();
+  const { mutate: orderCarts } = useCreateOrderCart();
 
-  if (!localStorage.getItem("product_id")) {
-    navigate("/");
-  }
+  const handlePayment = async () => {
+    try {
+      setIsLoading(true);
+      if (cart?.cart_items?.length > 0) {
+        const products_id = cart?.cart_items?.map((item) => {
+          return {
+            id: item.cart_item_id,
+          };
+        });
 
-  const handlePayment = () => {
-    mutate(
-      {
-        product_id: Number(localStorage.getItem("product_id")),
-        quantity: Number(localStorage.getItem("product_quantity")),
-        payment_method: selectedOption,
-        arrival_date: localStorage.getItem("product_date"),
-      },
-      {
-        onSuccess: (data) => {
-          localStorage.setItem("va", data.data.va_numbers[0].va_number);
-          localStorage.setItem("expired", data.data.expiry_time);
-          localStorage.setItem("payment_method", data.data.va_numbers[0].bank);
-          localStorage.setItem("order_id", data.data.order_id);
-          localStorage.removeItem("product_name");
-          localStorage.removeItem("product_quantity");
-          localStorage.removeItem("product_id");
-          localStorage.removeItem("product_price");
-          localStorage.removeItem("product_date");
-          navigate("/payment");
-        },
+        orderCarts(
+          {
+            payment_method: selectedOption,
+            cart_items: products_id,
+          },
+          {
+            onSuccess: (data) => {
+              setIsLoading(false);
+              localStorage.setItem("va", data.data.va_numbers[0].va_number);
+              localStorage.setItem("expired", data.data.expiry_time);
+              localStorage.setItem(
+                "payment_method",
+                data.data.va_numbers[0].bank
+              );
+              localStorage.setItem("order_id", data.data.order_id);
+              localStorage.setItem("gross_amount", data.data.gross_amount);
+
+              localStorage.removeItem("product_total_price");
+              localStorage.removeItem("product_name");
+              localStorage.removeItem("product_quantity");
+              localStorage.removeItem("product_id");
+              localStorage.removeItem("product_price");
+              localStorage.removeItem("product_date");
+              navigate("/payment");
+            },
+            onError: () => {
+              setIsLoading(false);
+              Swal.fire({
+                icon: "error",
+                title: "Pembayaran Gagal",
+                showConfirmButton: false,
+              });
+            },
+          }
+        );
+      } else {
+        mutate(
+          {
+            product_id: Number(localStorage.getItem("product_id")),
+            quantity: Number(localStorage.getItem("product_quantity")),
+            payment_method: selectedOption,
+            arrival_date: localStorage.getItem("product_date"),
+          },
+          {
+            onSuccess: (data) => {
+              setIsLoading(false);
+              if (data?.data?.payment_type === "qris") {
+                localStorage.setItem(
+                  "payment_method",
+                  data?.data?.payment_type
+                );
+                localStorage.setItem("qris_url", data.data.actions?.[0]?.url);
+              } else {
+                localStorage.setItem("va", data.data.va_numbers[0].va_number);
+                localStorage.setItem(
+                  "payment_method",
+                  data.data.va_numbers[0].bank
+                );
+              }
+
+              localStorage.setItem("gross_amount", data.data.gross_amount);
+              localStorage.setItem("expired", data.data.expiry_time);
+              localStorage.setItem("order_id", data.data.order_id);
+              localStorage.removeItem("product_name");
+              localStorage.removeItem("product_quantity");
+              localStorage.removeItem("product_id");
+              localStorage.removeItem("product_price");
+              localStorage.removeItem("product_date");
+
+              navigate("/payment");
+            },
+            onError: () => {
+              setIsLoading(false);
+              Swal.fire({
+                icon: "error",
+                title: "Pembayaran Gagal",
+                showConfirmButton: false,
+              });
+            },
+          }
+        );
       }
-    );
+    } catch (error) {
+      setIsLoading(false);
+      Promise.reject(error);
+    }
   };
+
+  useEffect(() => {
+    if (isError && !localStorage.getItem("product_name")) {
+      navigate("/");
+    }
+  }, [isError, navigate]);
 
   const paymentOptions = [
     {
@@ -116,19 +203,50 @@ export const Checkout = () => {
       </section>
 
       <h1 className="font-bold text-[1.5rem] mt-10 pl-[8%]">Detail Pesanan</h1>
-      <section className="flex ml-[10%]">
-        <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
-          <h3>Produk</h3>
-          <h3>Harga</h3>
-          <h3>Jumlah</h3>
-          <h3>Total</h3>
-        </div>
-        <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
-          <h3>: {localStorage.getItem("product_name")}</h3>
-          <h3>: Rp {localStorage.getItem("product_price")}</h3>
-          <h3>: {localStorage.getItem("product_quantity")}</h3>
-          <h3>: Rp {localStorage.getItem("product_total_price")}</h3>
-        </div>
+      <section className="flex flex-col gap-6">
+        {cart?.cart_items && (
+          <Fragment>
+            {cart?.cart_items?.map((item, index) => (
+              <section key={index} className="flex ml-[10%]">
+                <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
+                  <h3>Produk</h3>
+                  <h3>Harga</h3>
+                  <h3>Jumlah</h3>
+                </div>
+                <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
+                  <h3>: {item?.product_name}</h3>
+                  <h3>: Rp{item?.price?.toLocaleString("ID-id")}</h3>
+                  <h3>: {item?.quantity}</h3>
+                </div>
+              </section>
+            ))}
+            <h3 className="ml-[10%] px-5 text-lg font-bold mt-3 border-t-2 border-black w-fit py-2">
+              Total : Rp {cart?.grant_total?.toLocaleString("ID-id")}
+            </h3>
+          </Fragment>
+        )}
+
+        {localStorage.getItem("product_name") && (
+          <section className="flex ml-[10%]">
+            <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
+              <h3>Produk</h3>
+              <h3>Harga</h3>
+              <h3>Jumlah</h3>
+              <h3>Total</h3>
+            </div>
+            <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
+              <h3>: {localStorage.getItem("product_name")}</h3>
+              <h3>: Rp {localStorage.getItem("product_price")}</h3>
+              <h3>: {localStorage.getItem("product_quantity")}</h3>
+              <h3>
+                : Rp
+                {Number(
+                  localStorage.getItem("product_total_price")
+                ).toLocaleString("ID-id")}
+              </h3>
+            </div>
+          </section>
+        )}
       </section>
 
       <h1 className="font-bold text-[1.5rem] mt-10 pl-[8%]">Detail Pesanan</h1>
@@ -139,9 +257,9 @@ export const Checkout = () => {
           <h3>No Hp</h3>
         </div>
         <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
-          <h3>: johndoe</h3>
-          <h3>: johndoe@gmail.com</h3>
-          <h3>: 12345678</h3>
+          <h3>: {user?.fullname}</h3>
+          <h3>: {user?.email}</h3>
+          <h3>: {user?.phone}</h3>
         </div>
       </section>
 
@@ -151,8 +269,7 @@ export const Checkout = () => {
 
       <Accordion
         title={"Qris/Ewallet"}
-        className={"ml-[8%] border border-[#807F7F] text-[#807F7F] mt-5"}
-      >
+        className={"ml-[8%] border border-[#807F7F] text-[#807F7F] mt-5"}>
         <form className="w-full flex flex-col gap-5 py-3">
           {paymentOptions.map((option) => (
             <div key={option.id} className="flex justify-between mx-[5%] py-1">
@@ -182,8 +299,7 @@ export const Checkout = () => {
 
       <Accordion
         title={"Bank Transfer (Virtual Account)"}
-        className={"ml-[8%] border border-[#807F7F] text-[#807F7F] mt-5"}
-      >
+        className={"ml-[8%] border border-[#807F7F] text-[#807F7F] mt-5"}>
         <section className="w-full flex flex-col gap-5 py-3">
           {bankOptions.map((option) => (
             <div key={option.id} className="flex justify-between mx-[5%] py-1">
@@ -213,9 +329,9 @@ export const Checkout = () => {
 
       <button
         onClick={handlePayment}
-        className="w-[85%] py-3 bg-[#2284DF] text-white rounded-md mt-10 ml-[8%] font-bold text-lg mb-10"
-      >
-        Bayar
+        disabled={isLoading || !selectedOption}
+        className={`w-[85%] flex items-center justify-center py-3 bg-[#2284DF] text-white rounded-md mt-10 ml-[8%] font-bold text-lg mb-10 disabled:cursor-not-allowed disabled:bg-opacity-70`}>
+        {isLoading ? <Spinner width="w-6" height="h-6" /> : "Bayar"}
       </button>
     </main>
   );

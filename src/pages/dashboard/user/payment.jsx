@@ -2,17 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "../../../components";
 import { MdOutlineContentCopy } from "react-icons/md";
 import Swal from "sweetalert2";
-import { useGetCart } from "./hooks";
-import { useMemo } from "react";
 import { formatTime } from "../../../utils/helpers";
+import { Fragment } from "react";
 
 export const PaymentUser = () => {
-  const { data } = useGetCart();
-
-  const cart = useMemo(() => {
-    return data?.data;
-  }, [data?.data]);
-
   const navigate = useNavigate();
 
   return (
@@ -28,7 +21,7 @@ export const PaymentUser = () => {
 
       <h1 className="font-bold text-[1.7rem] pl-[8%] mt-3">Pembayaran</h1>
 
-      <section className="w-full h-[60%] flex flex-col justify-evenly items-center">
+      <section className="w-full h-[60%] flex flex-col justify-evenly items-center mt-4">
         <h1 className="font-bold text-[1.2rem]">
           ID PEMBAYARAN {localStorage.getItem("order_id")}
         </h1>
@@ -43,41 +36,79 @@ export const PaymentUser = () => {
         </h3>
         <h1 className="text-[#F46264] font-extrabold text-[2rem]">
           Rp
-          {Number(localStorage.getItem("product_total_price")).toLocaleString(
+          {Number(localStorage.getItem("gross_amount")).toLocaleString(
             "ID-id"
-          )}
+          ) ||
+            Number(localStorage.getItem("product_total_price")).toLocaleString(
+              "ID-id"
+            )}
         </h1>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/2560px-Bank_Central_Asia.svg.png"
-          alt="payment"
-          className="w-[100px]"
-        />
-        <p className="font-black">Nomor Virtual Account:</p>
-        <div className="border rounded-lg border-[#807F7F] h-10 overflow-hidden flex items-center justify-between w-[250px]">
-          <p className="text-[#807F7F] pl-3 select-none">
-            {localStorage.getItem("va")}
-          </p>
-          <div
-            onClick={() => {
-              navigator.clipboard
-                .writeText(localStorage.getItem("va"))
-                .then(() => {
-                  Swal.fire("Berhasil menyalin kode VA");
-                })
-                .catch((error) => {
-                  console.error("Gagal menyalin ke clipboard:", error);
-                  Swal.fire("Gagal menyalin kode VA");
-                });
-            }}
-            className="bg-[#807F7F] w-[15%] h-full text-white text-lg grid place-items-center hover:cursor-pointer hover:bg-gray-500"
-          >
-            <MdOutlineContentCopy />
-          </div>
-        </div>
+        {localStorage.getItem("payment_method") !== "qris" ? (
+          <Fragment>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/2560px-Bank_Central_Asia.svg.png"
+              alt="payment"
+              className="w-[100px]"
+            />
+            <p className="font-black">Nomor Virtual Account:</p>
+            <div className="border rounded-lg border-[#807F7F] h-10 overflow-hidden flex items-center justify-between w-[250px]">
+              <p className="text-[#807F7F] pl-3 select-none">
+                {localStorage.getItem("va")}
+              </p>
+              <div
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText(localStorage.getItem("va"))
+                    .then(() => {
+                      Swal.fire("Berhasil menyalin kode VA");
+                    })
+                    .catch((error) => {
+                      console.error("Gagal menyalin ke clipboard:", error);
+                      Swal.fire("Gagal menyalin kode VA");
+                    });
+                }}
+                className="bg-[#807F7F] w-[15%] h-full text-white text-lg grid place-items-center hover:cursor-pointer hover:bg-gray-500">
+                <MdOutlineContentCopy />
+              </div>
+            </div>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <img
+              src={localStorage.getItem("qris_url")}
+              alt="payment"
+              className="w-[200px]"
+            />
+            <button
+              onClick={() => {
+                navigator.clipboard
+                  .writeText(localStorage.getItem("qris_url"))
+                  .then(() => {
+                    Swal.fire("Berhasil menyalin link address QRIS");
+                  })
+                  .catch((error) => {
+                    console.error("Gagal menyalin ke clipboard:", error);
+                    Swal.fire("Gagal menyalin link address QRIS");
+                  });
+              }}
+              className="relative -top-2 p-4 rounded-md text-white text-lg bg-[#807F7F] hover:bg-gray-500">
+              <MdOutlineContentCopy />
+            </button>
+          </Fragment>
+        )}
+
         <button
-          onClick={() => navigate("/history")}
-          className="border border-[#2284DF] font-bold text-[#2284DF] rounded-lg px-2 py-1"
-        >
+          onClick={() => {
+            localStorage.removeItem("va");
+            localStorage.removeItem("expired");
+            localStorage.removeItem("payment_method");
+            localStorage.removeItem("order_id");
+            localStorage.removeItem("gross_amount");
+            localStorage.removeItem("product_total_price");
+
+            navigate("/history");
+          }}
+          className="border border-[#2284DF] font-bold text-[#2284DF] rounded-lg px-2 py-1">
           Cek Status Pembayaran
         </button>
       </section>
