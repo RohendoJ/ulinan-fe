@@ -24,7 +24,7 @@ export const CategoryDetail = () => {
 
   return (
     <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">
-      <Navbar />
+      <Navbar dashboard />
 
       <section className="text-[#2284DF] mt-[120px] w-full px-[8%]">
         <Link to={"/"} className="text-[#807F7F] hover:cursor-pointer">
