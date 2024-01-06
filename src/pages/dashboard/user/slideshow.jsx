@@ -2,9 +2,12 @@ import { Fade } from "react-slideshow-image";
 
 export const Slideshow = () => {
   const images = [
-    "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-    "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
-    "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+    "/panorama-1.jpg",
+    "/panorama-2.jpg",
+    "/panorama-3.jpg",
+    "/panorama-4.jpg",
+    "/panorama-5.jpeg",
+    "https://images.unsplash.com/photo-1615024420475-cc7f2fe24f6e?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   ];
 
   return (
@@ -14,23 +17,15 @@ export const Slideshow = () => {
           arrows={false}
           autoplay={true}
           transitionDuration={1000}
-          duration={2000}
-        >
-          <img
-            className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
-            src={images[0]}
-            alt="slide"
-          />
-          <img
-            className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
-            src={images[1]}
-            alt="slide"
-          />
-          <img
-            className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
-            src={images[2]}
-            alt="slide"
-          />
+          duration={2000}>
+          {images.map((image, index) => (
+            <img
+              key={index}
+              className="w-full h-[200px] md:h-[300px] object-cover rounded-md"
+              src={images[index]}
+              alt="slide"
+            />
+          ))}
         </Fade>
       </div>
     </section>

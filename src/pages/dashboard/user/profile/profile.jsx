@@ -53,14 +53,26 @@ export const ProfilePage = () => {
     {
       title: "Log Out",
       onClick: () => {
-        removeToken();
         Swal.fire({
-          icon: "success",
-          title: "Logout Success",
-          showConfirmButton: false,
-          timer: 2000,
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Logout",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Logout Success",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            removeToken();
+            navigate("/");
+          }
         });
-        navigate("/");
       },
     },
   ];
