@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CardUser, FooterUser, Navbar } from "../../../components";
+import { Navbar } from "../../../components";
 import { useState } from "react";
 import Accordion from "../../../components/accordion";
 
@@ -68,21 +68,21 @@ export const Checkout = () => {
       name: "bri",
       logoUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/1280px-BANK_BRI_logo.svg.png",
-      title: "bri",
+      title: "BRI",
     },
     {
       id: 4,
       name: "btn",
       logoUrl:
         "https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/ayobatang/images/post/articles/2020/01/15/467/bank-tabungan-negara-btn.jpg",
-      title: "btn",
+      title: "BTN",
     },
     {
       id: 5,
       name: "mandiri",
       logoUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png",
-      title: "mandiri",
+      title: "Mandiri",
     },
   ];
 

@@ -15,6 +15,7 @@ import {
   EditProfilePage,
   PaymentUser,
   Checkout,
+  ProductDetail,
 } from "./pages";
 import { AdminProtected, Protected } from "./utils/guard";
 import { EditProfilePassword } from "./pages/dashboard/user/profile/edit-password";
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
   { path: "/payment", element: <PaymentUser /> },
   { path: "/cart", element: <Cart /> },
   { path: "/category/:name", element: <CategoryDetail /> },
+  { path: "/category/:name/:product/", element: <ProductDetail /> },
   { path: "/category/:name/:product/checkout", element: <Checkout /> },
   {
     path: "/profile",
