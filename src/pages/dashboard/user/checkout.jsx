@@ -193,7 +193,10 @@ export const Checkout = () => {
         </section>
       </Accordion>
 
-      <button className="w-[85%] py-3 bg-[#2284DF] text-white rounded-md mt-10 ml-[8%] font-bold text-lg mb-10">
+      <button
+        onClick={handlePayment}
+        className="w-[85%] py-3 bg-[#2284DF] text-white rounded-md mt-10 ml-[8%] font-bold text-lg mb-10"
+      >
         Bayar
       </button>
     </main>
