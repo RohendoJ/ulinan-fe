@@ -7,18 +7,20 @@ import { useState } from "react";
 
 export const ProductDetail = () => {
   const [count, setCount] = useState(1);
-  const [isFullTextVisible, setIsFullTextVisible] = useState(false);
-
-  const toggleFullText = () => {
-    setIsFullTextVisible(!isFullTextVisible);
-  };
+  const [image, setImage] = useState(
+    "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?q=80&w=1475&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  );
 
   const imageUrls = [
     "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?q=80&w=1475&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?q=80&w=1475&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?q=80&w=1475&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?q=80&w=1475&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1606820854416-439b3305ff39?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dG91cnxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8dG91cnxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1528127269322-539801943592?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRvdXJ8ZW58MHx8MHx8fDA%3D",
   ];
+
+  const handleThumbnailClick = (url) => {
+    setImage(url);
+  };
 
   return (
     <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">
@@ -37,8 +39,8 @@ export const ProductDetail = () => {
         <div className="w-[90%] xl:w-[60%] flex flex-col gap-3 pl-[8%]">
           <div className="full h-[250px]">
             <img
-              className="w-full h-[250px] object-cover"
-              src="https://images.unsplash.com/photo-1465778893808-9b3d1b443be4?q=80&w=1475&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              className="w-full h-[250px] object-cover hover:cursor-pointer hover:scale-95 duration-300"
+              src={image}
               alt="wisata"
             />
           </div>
@@ -46,9 +48,10 @@ export const ProductDetail = () => {
             {imageUrls.map((url, index) => (
               <div key={index} className="w-[25%]">
                 <img
-                  className="w-full object-cover"
+                  className="w-full object-cover hover:cursor-pointer hover:scale-95 duration-300"
                   src={url}
                   alt={`wisata-${index}`}
+                  onClick={() => handleThumbnailClick(url)}
                 />
               </div>
             ))}
