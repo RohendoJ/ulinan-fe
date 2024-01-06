@@ -10,6 +10,10 @@ export const Checkout = () => {
     setSelectedOption(optionName);
   };
 
+  const handlePayment = () => {
+    console.log("Selected Payment Option:", selectedOption);
+  };
+
   const paymentOptions = [
     {
       id: 1,
