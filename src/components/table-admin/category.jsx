@@ -4,7 +4,13 @@ import { Link } from "react-router-dom";
 import { DataNotFound } from "./error";
 import Swal from "sweetalert2";
 
-export const TableCategoryAdmin = ({ data, isLoading, onDelete }) => {
+export const TableCategoryAdmin = ({
+  data,
+  isLoading,
+  onDelete,
+  currentPage,
+  itemsPerPage,
+}) => {
   if ((!data && !isLoading) || (data?.length === 0 && !isLoading)) {
     return <DataNotFound />;
   }
@@ -34,7 +40,7 @@ export const TableCategoryAdmin = ({ data, isLoading, onDelete }) => {
           {data?.map((data, index) => (
             <tr key={index}>
               <td className="py-2 px-5 text-center border-r-2 border-t-2 border-black">
-                {index + 1}
+                {index + 1 + (currentPage - 1) * itemsPerPage}
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
                 {data?.name}

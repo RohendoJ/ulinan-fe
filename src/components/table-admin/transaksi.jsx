@@ -4,7 +4,13 @@ import { Link } from "react-router-dom";
 import { DataNotFound } from "./error";
 import Swal from "sweetalert2";
 
-export const TableTransaksiAdmin = ({ data, isLoading, onDelete }) => {
+export const TableTransaksiAdmin = ({
+  data,
+  isLoading,
+  onDelete,
+  currentPage,
+  itemsPerPage,
+}) => {
   if ((!data && !isLoading) || (data?.length === 0 && !isLoading)) {
     return <DataNotFound />;
   }
@@ -54,22 +60,22 @@ export const TableTransaksiAdmin = ({ data, isLoading, onDelete }) => {
           </tr>
         </thead>
         <tbody className="font-semibold text-lg">
-          {data?.map((data, index) => (
+          {data?.map((item, index) => (
             <tr key={index}>
               <td className="py-2 px-5 text-center border-r-2 border-t-2 border-black">
-                {index + 1}
+                {index + 1 + (currentPage - 1) * itemsPerPage}
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
-                {data?.created_at}
+                {item?.created_at}
               </td>
               <td className="py-2 px-4 border-r-2 border-t-2 text-center border-black">
-                {data?.username}
+                {item?.username}
               </td>
-              {conditionalStatus(data?.payment_status)}
+              {conditionalStatus(item?.payment_status)}
               <td className="py-2 px-4 border-r-2 border-t-2 border-black">
                 <div className="w-full flex items-center justify-center gap-5">
                   <Link
-                    to={`/dashboard-admin/transaksi/edit/${data?.id}`}
+                    to={`/dashboard-admin/transaksi/edit/${item?.id}`}
                     className="flex items-center justify-center p-1 rounded-lg bg-[#F2C219]">
                     <MdEdit className="text-white text-2xl" />
                   </Link>
@@ -87,7 +93,7 @@ export const TableTransaksiAdmin = ({ data, isLoading, onDelete }) => {
                         iconColor: "#F2994A",
                       }).then((result) => {
                         if (result.isDenied) {
-                          onDelete(data?.id);
+                          onDelete(item?.id);
                         }
                       });
                     }}

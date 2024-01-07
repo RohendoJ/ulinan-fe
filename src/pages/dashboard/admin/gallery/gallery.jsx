@@ -88,6 +88,8 @@ export const GalleryAdmin = () => {
       <TableGalleryAdmin
         data={dataTable}
         isLoading={isLoading}
+        currentPage={meta?.current_page}
+        itemsPerPage={limit}
         onDelete={(id) => {
           mutate(id, {
             onSuccess: () => {
