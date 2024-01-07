@@ -106,7 +106,7 @@ export const AddGallery = () => {
 
           <div className="flex items-center justify-between">
             <ButtonLinkAdmin
-              href="/dashboard-admin/gallery"
+              href="/dashboard-admin/galeri"
               backgroundColor="bg-[#B3B2B2]"
               textSize="text-lg">
               Batal
