@@ -43,5 +43,5 @@ export const UserProtected = ({ children }) => {
     return children;
   }
 
-  return <Navigate to="/" />;
+  return children;
 };
