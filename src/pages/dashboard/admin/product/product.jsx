@@ -74,12 +74,12 @@ export const ProductAdmin = () => {
 
   return (
     <ContentAdminLayout title="Product" list={list}>
-      <div className="flex items-center mt-5 justify-between">
+      <div className="flex flex-col md:flex-row md:items-center mt-5 gap-4 md:gap-0 justify-between">
         <LimitSelect
           options={limitData}
           onChange={(e) => setLimit(e.target.value)}
         />
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col md:flex-row md:items-center gap-6">
           <Search onChange={search} />
           <ButtonLinkAdmin href="/dashboard-admin/product/add" />
         </div>
@@ -102,7 +102,7 @@ export const ProductAdmin = () => {
           });
         }}
       />
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-center md:justify-end">
         <ButtonPaginate
           onFirst={() => setPage(1)}
           onLast={() => setPage(meta?.total_page)}

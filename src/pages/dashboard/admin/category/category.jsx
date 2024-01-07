@@ -103,7 +103,7 @@ export const CategoryAdmin = () => {
           });
         }}
       />
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-center md:justify-end">
         <ButtonPaginate
           onFirst={() => setPage(1)}
           onLast={() => setPage(meta?.total_page)}

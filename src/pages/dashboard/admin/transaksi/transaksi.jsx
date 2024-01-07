@@ -74,7 +74,7 @@ export const TransaksiAdmin = () => {
 
   return (
     <ContentAdminLayout title="Transaksi" list={list}>
-      <div className="flex items-center mt-5 justify-between">
+      <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-0 mt-5 justify-between">
         <LimitSelect
           options={limitData}
           onChange={(e) => setLimit(e.target.value)}
@@ -99,7 +99,7 @@ export const TransaksiAdmin = () => {
           });
         }}
       />
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-center md:justify-end">
         <ButtonPaginate
           onFirst={() => setPage(1)}
           onLast={() => setPage(meta?.total_page)}
