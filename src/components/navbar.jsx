@@ -179,11 +179,35 @@ export const Navbar = (props) => {
 
         <Link
           to={"/history"}
+          onClick={() => {
+            const token = getToken();
+            if (!token) {
+              return Swal.fire({
+                icon: "info",
+                title: "Tidak bisa melihat riwayat",
+                text: "Silahkan login terlebih dahulu",
+                confirmButtonColor: "#2284DF",
+              });
+            }
+          }}
           className="text-[#2284DF] font-bold text-[1.2rem]">
           History
         </Link>
 
-        <Link to={"/cart"} className="text-[#2284DF] font-bold text-[1.2rem]">
+        <Link
+          to={"/cart"}
+          onClick={() => {
+            const token = getToken();
+            if (!token) {
+              return Swal.fire({
+                icon: "info",
+                title: "Tidak bisa melihat cart",
+                text: "Silahkan login terlebih dahulu",
+                confirmButtonColor: "#2284DF",
+              });
+            }
+          }}
+          className="text-[#2284DF] font-bold text-[1.2rem]">
           Cart
         </Link>
       </section>
