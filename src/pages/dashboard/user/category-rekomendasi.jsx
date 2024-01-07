@@ -18,7 +18,7 @@ export const CategoryHomepageRecommendation = (props) => {
       return (
         <CardUser
           key={product?.id}
-          image_url={product?.image[0]?.image_url}
+          image_url={product?.image[0]?.image_url || null}
           link={`/category/${product?.category}/${product?.id}`}
           title={product?.name}
           price={product?.price}

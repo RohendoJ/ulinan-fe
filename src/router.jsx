@@ -17,7 +17,7 @@ import {
   Checkout,
   ProductDetail,
 } from "./pages";
-import { AdminProtected, Protected } from "./utils/guard";
+import { AdminProtected, Protected, UserProtected } from "./utils/guard";
 import { EditProfilePassword } from "./pages/dashboard/user/profile/edit-password";
 import { CheckoutCart } from "./pages/dashboard/user/checkout-cart";
 
@@ -40,19 +40,58 @@ const {
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <UserProtected>
+        <Home />
+      </UserProtected>
+    ),
   },
-  { path: "/history", element: <History /> },
+  {
+    path: "/history",
+    element: (
+      <Protected>
+        <History />
+      </Protected>
+    ),
+  },
   {
     path: "/category",
     element: <HomeCategory />,
   },
-  { path: "/payment", element: <PaymentUser /> },
-  { path: "/cart", element: <Cart /> },
+  {
+    path: "/payment",
+    element: (
+      <Protected>
+        <PaymentUser />
+      </Protected>
+    ),
+  },
+  {
+    path: "/cart",
+    element: (
+      <Protected>
+        <Cart />
+      </Protected>
+    ),
+  },
   { path: "/category/:name", element: <CategoryDetail /> },
   { path: "/category/:name/:product_id/", element: <ProductDetail /> },
-  { path: "/item/pembayaran", element: <Checkout /> },
-  { path: "/item/pembayaran/cart", element: <CheckoutCart /> },
+  {
+    path: "/item/pembayaran",
+    element: (
+      <Protected>
+        <Checkout />
+      </Protected>
+    ),
+  },
+  {
+    path: "/item/pembayaran/cart",
+    element: (
+      <Protected>
+        <CheckoutCart />
+      </Protected>
+    ),
+  },
   {
     path: "/profile",
     element: (

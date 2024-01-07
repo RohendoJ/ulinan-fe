@@ -20,8 +20,6 @@ export const CategoryDetail = () => {
     search: search,
   });
 
-  console.log(product?.data?.length);
-
   return (
     <main className="w-screen xl:h-auto flex flex-col overflow-x-hidden">
       <Navbar dashboard />
@@ -57,7 +55,7 @@ export const CategoryDetail = () => {
             product?.data?.map((item) => (
               <CardUser
                 key={item?.id}
-                image_url={item?.image?.[0].image_url}
+                image_url={item?.image?.[0].image_url || null}
                 link={`/category/${item?.category}/${item?.id}`}
                 title={item?.name}
                 price={item?.price}

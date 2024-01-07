@@ -31,3 +31,17 @@ export const Protected = ({ children }) => {
   }
   return children;
 };
+
+export const UserProtected = ({ children }) => {
+  const token = getToken();
+
+  if (token) {
+    const decoded = jwtDecode(token);
+    if (decoded.role !== "user") {
+      return <Navigate to="/dashboard-admin" />;
+    }
+    return children;
+  }
+
+  return <Navigate to="/" />;
+};

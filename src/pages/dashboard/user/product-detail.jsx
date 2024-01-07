@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useGetProductById } from "../admin";
 import { useAddToCart } from "./hooks";
 import Swal from "sweetalert2";
+import { getToken } from "../../../utils/token";
 
 export const ProductDetail = () => {
   const [count, setCount] = useState(1);
@@ -33,6 +34,17 @@ export const ProductDetail = () => {
   const { mutate } = useAddToCart();
   const handleInsertCart = () => {
     try {
+      const token = getToken();
+
+      if (!token) {
+        return Swal.fire({
+          icon: "info",
+          title: "Tidak bisa menambah ke keranjang",
+          text: "Silahkan login terlebih dahulu",
+          confirmButtonColor: "#2284DF",
+        }).then(() => navigate("/auth/sign-in"));
+      }
+
       setIsLoading(true);
       mutate(
         {
@@ -70,6 +82,17 @@ export const ProductDetail = () => {
   }, [product?.image]);
 
   const handleBuy = () => {
+    const token = getToken();
+
+    if (!token) {
+      return Swal.fire({
+        icon: "info",
+        title: "Tidak bisa membeli",
+        text: "Silahkan login terlebih dahulu",
+        confirmButtonColor: "#2284DF",
+      }).then(() => navigate("/auth/sign-in"));
+    }
+
     localStorage.setItem("product_id", product.id);
     localStorage.setItem("product_name", product.name);
     localStorage.setItem("product_date", date);
