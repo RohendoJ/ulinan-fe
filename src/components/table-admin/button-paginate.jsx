@@ -11,7 +11,7 @@ export const ButtonPaginate = ({
 }) => {
   const generatePageArray = () => {
     const pages = [];
-    const middle = Math.floor(total / 6);
+    const middle = Math.floor(total / (total - 1 / 2));
 
     for (let i = page - middle; i <= page + middle; i++) {
       if (i > 0 && i <= total) {
