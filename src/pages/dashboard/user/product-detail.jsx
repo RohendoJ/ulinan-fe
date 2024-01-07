@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Navbar, Spinner } from "../../../components";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { LuClock7 } from "react-icons/lu";
@@ -159,8 +159,10 @@ export const ProductDetail = () => {
             <h3 className="font-bold text-[1.5rem]">Informasi</h3>
           </section>
 
-          <section className="flex items-center font-bold gap-2 mb-10 ">
-            <h3>{product?.description}</h3>
+          <section className="flex flex-col items-center font-bold gap-4 mb-10 ">
+            {product?.description?.split("\n\n").map((item) => (
+              <p key={item}>{item}</p>
+            ))}
           </section>
         </div>
 
