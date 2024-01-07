@@ -80,7 +80,7 @@ export const EditGallery = () => {
 
   return (
     <ContentAdminLayout
-      title="Tambah Foto"
+      title="Edit Galeri Product"
       notRootTitleColor="text-black"
       titleStyle="text-3xl font-bold"
       list={list}>

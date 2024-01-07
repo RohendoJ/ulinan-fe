@@ -40,7 +40,11 @@ const {
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <UserProtected>
+        <Home />
+      </UserProtected>
+    ),
   },
   {
     path: "/history",
