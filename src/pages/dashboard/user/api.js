@@ -29,3 +29,8 @@ export const createOrderCart = async (payload) => {
   const { data } = await api.post("/api/order/carts", payload);
   return data;
 };
+
+export const deleteCart = async (id) => {
+  const { data } = await api.delete(`/api/cart/${id}`);
+  return data;
+};

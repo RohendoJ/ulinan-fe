@@ -12,8 +12,6 @@ export const History = () => {
     return data?.data;
   }, [data?.data]);
 
-  console.log(history);
-
   const conditionalStatus = (status) => {
     return (
       <td

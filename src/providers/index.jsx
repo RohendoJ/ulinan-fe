@@ -10,14 +10,6 @@ export const QueryProvider = ({ children }) => {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        onError: (error) => {
-          console.log(error);
-        },
-      },
-      mutations: {
-        onError: (error) => {
-          console.log(error);
-        },
       },
     },
   });

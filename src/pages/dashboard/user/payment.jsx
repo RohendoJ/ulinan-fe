@@ -8,6 +8,12 @@ import { Fragment } from "react";
 export const PaymentUser = () => {
   const navigate = useNavigate();
 
+  const bankMethod = {
+    bni: "https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/2560px-BNI_logo.svg.png",
+    bca: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/2560px-Bank_Central_Asia.svg.png",
+    bri: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/1280px-BANK_BRI_logo.svg.png",
+  };
+
   return (
     <main className="w-full h-screen flex flex-col overflow-x-hidden">
       <Navbar />
@@ -46,7 +52,7 @@ export const PaymentUser = () => {
         {localStorage.getItem("payment_method") !== "qris" ? (
           <Fragment>
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/2560px-Bank_Central_Asia.svg.png"
+              src={bankMethod[localStorage.getItem("payment_method")]}
               alt="payment"
               className="w-[100px]"
             />
@@ -105,6 +111,7 @@ export const PaymentUser = () => {
             localStorage.removeItem("order_id");
             localStorage.removeItem("gross_amount");
             localStorage.removeItem("product_total_price");
+            localStorage.removeItem("qris_url");
 
             navigate("/history");
           }}

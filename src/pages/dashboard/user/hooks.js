@@ -3,6 +3,7 @@ import {
   addToCart,
   createOrder,
   createOrderCart,
+  deleteCart,
   getCart,
   getHistoryTransaction,
   getProductRecommendation,
@@ -49,5 +50,12 @@ export const useCreateOrderCart = () => {
   return useMutation({
     mutationKey: ["create-order-carts"],
     mutationFn: async (payload) => await createOrderCart(payload),
+  });
+};
+
+export const useDeleteCart = () => {
+  return useMutation({
+    mutationKey: ["delete-cart"],
+    mutationFn: async (id) => await deleteCart(id),
   });
 };

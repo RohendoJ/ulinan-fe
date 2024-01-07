@@ -1,32 +1,41 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Spinner } from "../../../components";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import Accordion from "../../../components/accordion";
-import { useCreateOrder } from "./hooks";
+import { useCreateOrderCart, useGetCart } from "./hooks";
 import { useGetUserMe } from "../../../components/navbar-admin/hooks";
 import Swal from "sweetalert2";
 
-export const Checkout = () => {
+export const CheckoutCart = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { data, isError } = useGetCart();
   const { data: user } = useGetUserMe();
+
+  const cart = useMemo(() => {
+    return data?.data;
+  }, [data?.data]);
 
   const handleOptionChange = (optionName) => {
     setSelectedOption(optionName);
   };
 
-  const { mutate } = useCreateOrder();
+  const { mutate: orderCarts } = useCreateOrderCart();
 
   const handlePayment = async () => {
     try {
       setIsLoading(true);
 
-      mutate(
+      const products_id = cart?.cart_items?.map((item) => {
+        return {
+          id: item.cart_item_id,
+        };
+      });
+
+      orderCarts(
         {
-          product_id: Number(localStorage.getItem("product_id")),
-          quantity: Number(localStorage.getItem("product_quantity")),
           payment_method:
             selectedOption === "dana" ||
             selectedOption === "ovo" ||
@@ -34,7 +43,7 @@ export const Checkout = () => {
             selectedOption === "gopay"
               ? "qris"
               : selectedOption,
-          arrival_date: localStorage.getItem("product_date"),
+          cart_items: products_id,
         },
         {
           onSuccess: (data) => {
@@ -58,7 +67,6 @@ export const Checkout = () => {
             localStorage.removeItem("product_id");
             localStorage.removeItem("product_price");
             localStorage.removeItem("product_date");
-
             navigate("/payment");
           },
           onError: () => {
@@ -68,6 +76,13 @@ export const Checkout = () => {
               title: "Pembayaran Gagal",
               showConfirmButton: false,
             });
+
+            localStorage.removeItem("product_total_price");
+            localStorage.removeItem("product_name");
+            localStorage.removeItem("product_quantity");
+            localStorage.removeItem("product_id");
+            localStorage.removeItem("product_price");
+            localStorage.removeItem("product_date");
           },
         }
       );
@@ -78,10 +93,10 @@ export const Checkout = () => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("product_name")) {
+    if (isError) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [isError, navigate]);
 
   const paymentOptions = [
     {
@@ -158,26 +173,26 @@ export const Checkout = () => {
 
       <h1 className="font-bold text-[1.5rem] mt-10 pl-[8%]">Detail Pesanan</h1>
       <section className="flex flex-col gap-6">
-        {localStorage.getItem("product_name") && (
-          <section className="flex ml-[10%]">
-            <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
-              <h3>Produk</h3>
-              <h3>Harga</h3>
-              <h3>Jumlah</h3>
-              <h3>Total</h3>
-            </div>
-            <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
-              <h3>: {localStorage.getItem("product_name")}</h3>
-              <h3>: Rp {localStorage.getItem("product_price")}</h3>
-              <h3>: {localStorage.getItem("product_quantity")}</h3>
-              <h3>
-                : Rp
-                {Number(
-                  localStorage.getItem("product_total_price")
-                ).toLocaleString("ID-id")}
-              </h3>
-            </div>
-          </section>
+        {cart?.cart_items && (
+          <Fragment>
+            {cart?.cart_items?.map((item, index) => (
+              <section key={index} className="flex ml-[10%]">
+                <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
+                  <h3>Produk</h3>
+                  <h3>Harga</h3>
+                  <h3>Jumlah</h3>
+                </div>
+                <div className="flex flex-col justify-between px-5 text-lg font-bold gap-3 p-2">
+                  <h3>: {item?.product_name}</h3>
+                  <h3>: Rp{item?.price?.toLocaleString("ID-id")}</h3>
+                  <h3>: {item?.quantity}</h3>
+                </div>
+              </section>
+            ))}
+            <h3 className="ml-[10%] px-5 text-lg font-bold mt-3 border-t-2 border-black w-fit py-2">
+              Total : Rp {cart?.grant_total?.toLocaleString("ID-id")}
+            </h3>
+          </Fragment>
         )}
       </section>
 
